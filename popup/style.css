@@ -1,0 +1,68 @@
+.center {
+    margin: auto;
+    max-width: 300px;
+    width: 100%
+}
+
+div.table-title {
+    text-align: center;
+    display: table;
+    align-content: center;
+    margin: auto;
+    max-width: 300px;
+    width: 100%;
+    padding-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 300px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.styled-table thead tr {
+    background-color: #FF2B42;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr:not(:last-of-type) {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #FF2B42;
+}
+
+thead tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+thead tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}

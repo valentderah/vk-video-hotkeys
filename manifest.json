@@ -9,14 +9,16 @@
     "64": "images/icon-64.png",
     "128": "images/icon-128.png"
   },
+  "action": {
+    "default_popup": "popup/settings.html"
+  },
   "content_scripts": [
     {
       "js": [
         "scripts/content.js"
       ],
       "matches": [
-        "https://vk.com/video*",
-        "https://vk.com/*"
+        "https://vk.com/video*"
       ]
     }
   ]
