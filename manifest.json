@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Горячие клавиши ВК Видео",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Позволяет вернуть привычное для ютуба управление",
   "icons": {
     "16": "images/icon-16.png",
