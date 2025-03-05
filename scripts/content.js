@@ -2,6 +2,7 @@ VkVideoPlayer = function () {
     let self = this
 
     this.html_selector = ".videoplayer_media_provider"
+    this.captions_selector = ".videoplayer_btn_subtitles"
 
     this.get_html = function () {
         return document.querySelector(self.html_selector)
@@ -48,7 +49,33 @@ VkVideoPlayer = function () {
         return player.currentTime = player.duration * number / 10
     }
 
+    this.captions = function () {
+        // профессиАнальный костыль
+        document.querySelector(self.captions_selector).click()
+        document.querySelector(self.captions_selector).click()
+    }
+
+    this.cinema_mode = function () {
+        let recs = document.querySelector('.vkuiSplitCol').nextElementSibling
+
+        if (recs && recs.style.display === 'none') {
+            recs.style.display = null
+        } else {
+            recs.style.display = 'none'
+        }
+    }
+
     this.operations = {
+        captions: {
+            key: 'KeyC',
+            make: self.make_operation,
+            params: ['captions']
+        },
+        cinema: {
+            key: 'KeyT',
+            make: self.make_operation,
+            params: ['cinema_mode']
+        },
         forward: {
             key: 'KeyL',
             make: self.make_operation,
