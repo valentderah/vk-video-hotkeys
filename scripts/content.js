@@ -3,6 +3,7 @@ VkVideoPlayer = function () {
 
     this.html_selector = ".videoplayer_media_provider"
     this.captions_selector = ".videoplayer_btn_subtitles"
+    this.columns_selector = '.vkuiSplitCol__host'
 
     this.get_html = function () {
         return document.querySelector(self.html_selector)
@@ -56,7 +57,7 @@ VkVideoPlayer = function () {
     }
 
     this.cinema_mode = function () {
-        let recs = document.querySelector('.vkuiSplitCol').nextElementSibling
+        let recs = document.querySelector(self.columns_selector).nextElementSibling
 
         if (recs && recs.style.display === 'none') {
             recs.style.display = null
