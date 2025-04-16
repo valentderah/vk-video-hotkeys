@@ -27,6 +27,6 @@
 <details>
 <summary>Расширение в магазинах расширений</summary> 
 
-1. https://chromewebstore.google.com/detail/горячие-клавиши-вк-видео/pgacfedlkaomiedeibedjhpmiknfkidk?hl=ru&authuser=1
+1. https://vk.cc/cKRyjf
 </details>
 </div>
