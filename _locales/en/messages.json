@@ -1,0 +1,53 @@
+{
+  "colored_logo" : {
+    "message": "<a style='color:#0077FF'>VK</a>&nbsp;<a style='color:#FF2B42'>Video</a> hotkeys"
+  },
+  "ext_name": {
+    "message": "VK Video hotkeys"
+  },
+  "ext_description": {
+    "message": "Bring back the usual YouTube keyboard shortcuts in VK Video!"
+  },
+  "key": {
+    "message": "Key"
+  },
+  "action": {
+    "message": "Action"
+  },
+  "backward_15": {
+    "message": "Backward 15 seconds"
+  },
+  "forward_15": {
+    "message": "Forward 15 seconds"
+  },
+  "play_pause": {
+    "message": "Play / Pause"
+  },
+  "percentage_rewind": {
+    "message": "Rewind by percentage of the video"
+  },
+  "turn_on_off_subs": {
+    "message": "Turn on/off captions"
+  },
+  "turn_on_off_cinema": {
+    "message": "Turn on/off cinema mode"
+  },
+    "KeyJ": {
+    "message": "J"
+  },
+  "KeyK": {
+    "message": "K"
+  },
+  "KeyL": {
+    "message": "L"
+  },
+  "KeyT": {
+    "message": "T"
+  },
+  "KeyC": {
+    "message": "C"
+  },
+  "Key0_9": {
+    "message": "0-9"
+  }
+}

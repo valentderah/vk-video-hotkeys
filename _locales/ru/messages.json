@@ -1,0 +1,53 @@
+{
+  "colored_logo" : {
+    "message": "Горячие клавиши <a style='color:#0077FF'>VK</a>&nbsp;<a style='color:#FF2B42'>Видео</a>"
+  },
+  "ext_name": {
+    "message": "Горячие клавиши ВК Видео"
+  },
+  "ext_description": {
+    "message": "Верни привычные для ютуба горячие клавиши в ВК Видео!"
+  },
+  "key": {
+    "message": "Клавиша"
+  },
+  "action": {
+    "message": "Действие"
+  },
+  "backward_15": {
+    "message": "Назад на 15 секунд"
+  },
+  "forward_15": {
+    "message": "Вперед на 15 секунд"
+  },
+  "play_pause": {
+    "message": "Пауза / Проигрывание"
+  },
+  "percentage_rewind": {
+    "message": "Перемотка в процентах от видео"
+  },
+  "turn_on_off_subs": {
+    "message": "Включить/Выключить субтитры"
+  },
+  "turn_on_off_cinema": {
+    "message": "Включить/Выключить режим кинотеатра"
+  },
+  "KeyJ": {
+    "message": "О"
+  },
+  "KeyK": {
+    "message": "Л"
+  },
+  "KeyL": {
+    "message": "Д"
+  },
+  "KeyT": {
+    "message": "Е"
+  },
+  "KeyC": {
+    "message": "С"
+  },
+  "Key0_9": {
+    "message": "0-9"
+  }
+}

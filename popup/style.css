@@ -4,6 +4,10 @@
     width: 100%
 }
 
+.min-v300 {
+    min-width: 300px;
+}
+
 div.table-title {
     text-align: center;
     display: table;
@@ -26,15 +30,18 @@ div.table-title {
     border-radius: 10px;
 }
 
-.styled-table thead tr {
+.styled-table thead tr,
+.styled-table thead th {
     background-color: #FF2B42;
     color: #ffffff;
-    text-align: left;
+    font-weight: bold !important;
 }
 
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
+    text-align: left;
+    font-weight: normal;
 }
 
 .styled-table tbody tr:not(:last-of-type) {
@@ -43,12 +50,6 @@ div.table-title {
 
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
-}
-
-
-.styled-table tbody tr.active-row {
-    font-weight: bold;
-    color: #FF2B42;
 }
 
 thead tr:first-child th:first-child {
