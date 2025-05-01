@@ -10,11 +10,9 @@ VkVideoPlayer = function () {
     }
 
     this.can_start_operations = function () {
-        let cant_classes = ['reply_field', 'ui_search_field']
-
-        let has_activity = !!Array.from(document.activeElement.classList).filter(
-            active_classes => cant_classes.includes(active_classes)
-        ).length
+        let has_activity = document.activeElement.classList.toString().includes(
+            'vkitCommentInputContentEditable'
+        )
 
         return !has_activity && self.get_html()
     }

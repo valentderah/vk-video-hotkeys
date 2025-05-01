@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_ext_name__",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "description": "__MSG_ext_description__",
   "default_locale": "ru",
   "icons": {
@@ -11,12 +11,12 @@
     "128": "images/icon-128.png"
   },
   "action": {
-    "default_popup": "popup/settings.html"
+    "default_popup": "index.html"
   },
   "content_scripts": [
     {
       "js": [
-        "scripts/content.js"
+        "background.js"
       ],
       "matches": [
         "https://vk.com/video*",
