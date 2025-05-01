@@ -1,12 +1,11 @@
 {
   "name": "vk-video-hotkeys",
-  "version": "1.0.0",
-  "description": "<div>\r   <h2>Горячие клавиши VK Video <img src=\"images/icon-32.png\" width=\"20px\"></h2>\r   <p>Это расширение позволяети вернуть привычное для ютуба управление плеером на JKL.\r </div>",
+  "version": "1.4.3",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js --mode=production",
-    "dev": "webpack --config webpack.config.js --watch --mode=production"
+    "build": "webpack --config webpack.config.js",
+    "dev": "webpack --config webpack.config.js --watch"
   },
   "repository": {
     "type": "git",
@@ -26,6 +25,8 @@
   "devDependencies": {
     "babel-loader": "^10.0.0",
     "copy-webpack-plugin": "^13.0.0",
-    "html-webpack-plugin": "^5.6.3"
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2"
   }
 }
