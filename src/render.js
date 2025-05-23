@@ -86,6 +86,10 @@ const Context = {
             {
                 "key": Message("KeyT"),
                 "action": Message("turn_on_off_cinema")
+            },
+            {
+                "key": Message("KeyH"),
+                "action": Message("change_speed")
             }
         ]
     }

@@ -1,5 +1,5 @@
 {
-  "colored_logo" : {
+  "colored_logo": {
     "message": "Горячие клавиши <a style='color:#0077FF'>VK</a>&nbsp;<a style='color:#FF2B42'>Видео</a>"
   },
   "ext_name": {
@@ -31,6 +31,12 @@
   },
   "turn_on_off_cinema": {
     "message": "Включить/Выключить режим кинотеатра"
+  },
+  "change_speed": {
+    "message": "Изменить скорость видео"
+  },
+  "KeyH": {
+    "message": "Р"
   },
   "KeyJ": {
     "message": "О"

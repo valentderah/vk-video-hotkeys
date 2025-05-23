@@ -1,3 +1,9 @@
+function round(value, step) {
+    step || (step = 1.0);
+    let inv = 1.0 / step;
+    return Math.round(value * inv) / inv;
+}
+
 VkVideoPlayer = function () {
     let self = this
 
@@ -15,6 +21,46 @@ VkVideoPlayer = function () {
         )
 
         return !has_activity && self.get_html()
+    }
+
+    this.auto_choice_speed = function () {
+        let set_to = 1.0
+        let player = self.get_html()
+        let current_speed = player.playbackRate
+
+        let controller = {
+            1.0: {
+                to: 1.5
+            },
+            1.25: {
+                to: 1.5
+            },
+            1.5: {
+                to: 2.0
+            },
+            2.0: {
+                to: 1.0
+            }
+        }
+
+        if (
+            current_speed < 2.0
+        ) {
+            if (!(current_speed in controller)) {
+                current_speed = round(current_speed, 0.25)
+            }
+            set_to = controller[current_speed].to
+        }
+
+        console.log(set_to)
+
+        return set_to
+
+    }
+
+    this.change_speed = function () {
+        let player = self.get_html()
+        return player.playbackRate = self.auto_choice_speed()
     }
 
     this.make_operation = function (
@@ -65,6 +111,11 @@ VkVideoPlayer = function () {
     }
 
     this.operations = {
+        change_speed: {
+            key: 'KeyH',
+            make: self.make_operation,
+            params: ['change_speed']
+        },
         captions: {
             key: 'KeyC',
             make: self.make_operation,

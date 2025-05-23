@@ -1,5 +1,5 @@
 {
-  "colored_logo" : {
+  "colored_logo": {
     "message": "<a style='color:#0077FF'>VK</a>&nbsp;<a style='color:#FF2B42'>Video</a> hotkeys"
   },
   "ext_name": {
@@ -32,7 +32,13 @@
   "turn_on_off_cinema": {
     "message": "Turn on/off cinema mode"
   },
-    "KeyJ": {
+  "KeyH": {
+    "message": "H"
+  },
+  "change_speed": {
+    "message": "Change video speed"
+  },
+  "KeyJ": {
     "message": "J"
   },
   "KeyK": {
