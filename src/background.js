@@ -10,7 +10,33 @@ VkVideoPlayer = function () {
     this.html_selector = ".videoplayer_media_provider"
     this.captions_selector = ".videoplayer_btn_subtitles"
     this.columns_selector = '.vkuiSplitCol__host'
+    this.control_selector = '#ext-vk-video-controller'
+    this.control_template = `
+        <div id="ext-vk-video-controller" 
+        style="top: 0; right: 0; position: absolute; 
+            z-index: 9999999; margin: 10px 10px 10px 15px; padding: 0.5rem;
+            opacity: 0.3; border-radius: 0.5rem; background: black;">
+          <span style="" class="speed">{speed}</span>
+        </div>`
 
+    this.get_control_ui = function () {
+        let el = document.querySelector(self.control_selector)
+        let player = self.get_html()
+
+        if (el) {
+            return el
+        }
+
+        el = new DOMParser().parseFromString(
+            self.control_template.replace('{speed}', player.playbackRate),
+            'text/html'
+        ).body.firstChild
+
+
+        player.parentNode.insertBefore(el, player)
+
+        return document.querySelector(self.control_selector)
+    }
     this.get_html = function () {
         return document.querySelector(self.html_selector)
     }
@@ -52,15 +78,19 @@ VkVideoPlayer = function () {
             set_to = controller[current_speed].to
         }
 
-        console.log(set_to)
-
         return set_to
 
     }
 
+    this.ui_show_speed = function () {
+        let player = self.get_html()
+        self.get_control_ui().firstElementChild.textContent = `${player.playbackRate.toFixed(2)}x`
+    }
+
     this.change_speed = function () {
         let player = self.get_html()
-        return player.playbackRate = self.auto_choice_speed()
+        player.playbackRate = self.auto_choice_speed()
+        self.ui_show_speed()
     }
 
     this.make_operation = function (
@@ -211,6 +241,35 @@ VkVideoPlayer = function () {
                 }
             }
         )
+
+
+        let c = 0
+        let max = 5
+
+        let _i = setInterval(
+            () => {
+                let player = self.get_html()
+
+                if (c >= max) {
+                    clearInterval(_i)
+                }
+
+                if (player) {
+                    player.addEventListener(
+                        'ratechange',
+                        function () {
+                            self.ui_show_speed()
+                        }
+                    )
+                    clearInterval(_i)
+                }
+
+                c++
+            },
+            1000
+        )
+
+
     }
 
     return this
