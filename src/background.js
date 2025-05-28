@@ -18,6 +18,9 @@ VkVideoPlayer = function () {
             opacity: 0.3; border-radius: 0.5rem; background: black;">
           <span style="" class="speed">{speed}</span>
         </div>`
+    this.show_timeout = null
+    this.max_speed = 2.00
+    this.min_speed = 0.25
 
     this.get_control_ui = function () {
         let el = document.querySelector(self.control_selector)
@@ -49,48 +52,38 @@ VkVideoPlayer = function () {
         return !has_activity && self.get_html()
     }
 
-    this.auto_choice_speed = function () {
-        let set_to = 1.0
-        let player = self.get_html()
-        let current_speed = player.playbackRate
-
-        let controller = {
-            1.0: {
-                to: 1.5
-            },
-            1.25: {
-                to: 1.5
-            },
-            1.5: {
-                to: 2.0
-            },
-            2.0: {
-                to: 1.0
-            }
-        }
-
-        if (
-            current_speed < 2.0
-        ) {
-            if (!(current_speed in controller)) {
-                current_speed = round(current_speed, 0.25)
-            }
-            set_to = controller[current_speed].to
-        }
-
-        return set_to
-
-    }
-
     this.ui_show_speed = function () {
         let player = self.get_html()
         self.get_control_ui().firstElementChild.textContent = `${player.playbackRate.toFixed(2)}x`
     }
 
-    this.change_speed = function () {
+    this.ui_hide_speed = function () {
+        self.get_control_ui().remove()
+    }
+
+    this.change_speed = function (
+        gap
+    ) {
         let player = self.get_html()
-        player.playbackRate = self.auto_choice_speed()
+        let end_speed = player.playbackRate + gap
+
+        if (
+            end_speed <= self.max_speed &&
+            end_speed >= self.min_speed
+        ) {
+            player.playbackRate = end_speed
+        }
+
         self.ui_show_speed()
+
+        if (self.show_timeout) {
+            clearTimeout(self.show_timeout)
+        }
+
+        self.show_timeout = setTimeout(
+            self.ui_hide_speed,
+            1000
+        )
     }
 
     this.make_operation = function (
@@ -141,10 +134,15 @@ VkVideoPlayer = function () {
     }
 
     this.operations = {
-        change_speed: {
-            key: 'KeyH',
+        increase_speed: {
+            key: 'Period',
             make: self.make_operation,
-            params: ['change_speed']
+            params: ['change_speed', 0.25]
+        },
+        decrease_speed: {
+            key: 'Comma',
+            make: self.make_operation,
+            params: ['change_speed', -0.25]
         },
         captions: {
             key: 'KeyC',

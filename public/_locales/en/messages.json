@@ -27,13 +27,25 @@
     "message": "Rewind by percentage of the video"
   },
   "turn_on_off_subs": {
-    "message": "Turn on/off captions"
+    "message": "Show/close captions and subtitles if available"
   },
   "turn_on_off_cinema": {
     "message": "Turn on/off cinema mode"
   },
   "KeyH": {
     "message": "H"
+  },
+  "decrease_speed_button": {
+    "message": "<"
+  },
+  "increase_speed_button": {
+    "message": ">"
+  },
+  "increase_speed": {
+    "message": "Speed up the video playback rate"
+  },
+  "decrease_speed": {
+    "message": "Slow down the video playback rate"
   },
   "change_speed": {
     "message": "Change video speed"

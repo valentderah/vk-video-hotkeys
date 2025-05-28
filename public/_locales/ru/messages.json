@@ -38,6 +38,18 @@
   "KeyH": {
     "message": "Р"
   },
+    "decrease_speed_button": {
+    "message": "<"
+  },
+  "increase_speed_button": {
+    "message": ">"
+  },
+  "increase_speed": {
+    "message": "Увеличить скорость воспроизведения"
+  },
+  "decrease_speed": {
+    "message": "Уменьшить скорость воспроизведения"
+  },
   "KeyJ": {
     "message": "О"
   },

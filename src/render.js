@@ -88,8 +88,12 @@ const Context = {
                 "action": Message("turn_on_off_cinema")
             },
             {
-                "key": Message("KeyH"),
-                "action": Message("change_speed")
+                "key": Message("decrease_speed_button"),
+                "action": Message("decrease_speed")
+            },
+            {
+                "key": Message("increase_speed_button"),
+                "action": Message("increase_speed")
             }
         ]
     }
