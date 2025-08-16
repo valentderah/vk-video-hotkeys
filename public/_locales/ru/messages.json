@@ -38,7 +38,7 @@
   "KeyH": {
     "message": "Р"
   },
-    "decrease_speed_button": {
+  "decrease_speed_button": {
     "message": "<"
   },
   "increase_speed_button": {
@@ -67,5 +67,14 @@
   },
   "Key0_9": {
     "message": "0-9"
+  },
+  "tg_channel_link": {
+    "message": "https://t.me/valentderah"
+  },
+  "vk_channel_link": {
+    "message": "https://vk.com/valentderah"
+  },
+  "ext_version": {
+    "message": "Версия расширения"
   }
 }

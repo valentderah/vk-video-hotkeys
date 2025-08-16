@@ -67,5 +67,8 @@
   },
   "Key0_9": {
     "message": "0-9"
+  },
+  "ext_version": {
+    "message": "Extension version"
   }
 }

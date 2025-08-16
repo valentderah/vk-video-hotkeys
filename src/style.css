@@ -20,9 +20,34 @@ div.table-title {
     font-weight: bold;
 }
 
+.gray-small-text {
+    color: #888888;
+    font-size: 0.875rem;
+}
+
+.xx-small {
+    font-size: 0.75rem!important;
+}
+
+.center-text {
+    text-align: center;
+    display: table;
+    align-content: center;
+    margin: auto;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.link {
+    cursor: pointer;
+}
+
 .styled-table {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 300px;
@@ -66,4 +91,22 @@ tbody tr:last-child td:first-child {
 
 tbody tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
+}
+
+.icon-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
