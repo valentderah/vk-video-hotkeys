@@ -2,281 +2,334 @@ VKVideoPlayer = (
     function () {
         let self = this
 
-        self.html_selector = ".videoplayer_media_provider"
-        self.captions_selector = ".videoplayer_btn_subtitles"
-        self.columns_selector = '.vkuiSplitCol__host'
-        self.control_selector = '#ext-vk-video-controller'
-        self.control_template = `
-        <div id="ext-vk-video-controller" 
-        style="top: 0; right: 0; position: absolute; 
-            z-index: 9999999; margin: 10px 10px 10px 15px; padding: 0.5rem;
-            opacity: 0.3; border-radius: 0.5rem; background: black;">
-          <span style="" class="speed">{speed}</span>
-        </div>
-    `
-        self.show_timeout = null
-        self.max_speed = 2.00
-        self.min_speed = 0.25
+        self._timeout = null
+        self._inverval_time = 1000
+        self._retrys = 5
 
-        self.get_control_ui = function () {
-            let el = document.querySelector(self.control_selector)
-            let player = self.get_html()
+        self.config = {
+            logic_config: self.logic_config,
+            speed_gap: 0.25,
+            rewind_gap: 15, // seconds
+            min_speed: 0.25,
+            max_speed: 2.00
+        }
+
+        self.selectors = {
+            player: {
+                ui: '.videoplayer_ui',
+                video: ".videoplayer_media_provider",
+                captions: ".videoplayer_btn_subtitles",
+                controls: ".videoplayer_controls",
+            },
+            columns: ".vkuiSplitCol__host",
+            ext_speed_label: "#ext-vk-video-controller",
+            editable_input: ".vkitCommentInputContentEditable"
+        }
+
+        self.ui = {
+            ext_speed_label: `<div id="${self.selectors.ext_speed_label.slice(1)}" 
+                style="top: 0; right: 0; position: absolute; 
+                z-index: 9999999; margin: 10px 10px 10px 15px; padding: 0.5rem;
+                opacity: 0.3; border-radius: 0.5rem; background: black;">
+              <span style="" class="speed">{speed}</span>
+            </div>`
+        }
+
+        self.get_speed_label = function () {
+            let el = document.querySelector(
+                self.selectors.ext_speed_label
+            )
+            let video = self.get_video()
 
             if (el) {
                 return el
             }
 
             el = new DOMParser().parseFromString(
-                self.control_template.replace('{speed}', player.playbackRate),
-                'text/html'
+                self.ui.ext_speed_label.replace(
+                    "{speed}",
+                    video.playbackRate
+                ),
+                "text/html"
             ).body.firstChild
 
 
-            player.parentNode.insertBefore(el, player)
+            video.parentNode.insertBefore(el, video)
 
-            return document.querySelector(self.control_selector)
-        }
-
-        self.get_html = function () {
-            return document.querySelector(self.html_selector)
-        }
-
-        self.can_start_operations = function () {
-            let has_activity = document.activeElement.classList.toString().includes(
-                'vkitCommentInputContentEditable'
-            )
-
-            return !has_activity && self.get_html()
-        }
-
-        self.ui_show_speed = function () {
-            let player = self.get_html()
-            self.get_control_ui().firstElementChild.textContent = `${player.playbackRate.toFixed(2)}x`
-        }
-
-        self.ui_hide_speed = function () {
-            self.get_control_ui().remove()
-        }
-
-        self.change_speed = function (
-            gap
-        ) {
-            let player = self.get_html()
-            let end_speed = player.playbackRate + gap
-
-            if (
-                end_speed <= self.max_speed &&
-                end_speed >= self.min_speed
-            ) {
-                player.playbackRate = end_speed
-            }
-
-            self.ui_show_speed()
-
-            if (self.show_timeout) {
-                clearTimeout(self.show_timeout)
-            }
-
-            self.show_timeout = setTimeout(
-                self.ui_hide_speed,
-                1000
+            return document.querySelector(
+                self.selectors.ext_speed_label
             )
         }
 
-        self.make_operation = function (
+        self.get_video = function () {
+            return document.querySelector(
+                self.selectors.player.video
+            )
+        }
+
+        self.can_make_logic = function () {
+            let classes = document.activeElement.classList
+
+            let has_activity = classes.toString().includes(
+                self.selectors.editable_input.slice(1)
+            )
+
+            return (
+                !has_activity &&
+                self.get_video()
+            )
+        }
+
+        self.make_logic = function (
             name,
             params
         ) {
-            if (self.can_start_operations()) {
-                self[name].apply(this, [params])
+            if (self.can_make_logic()) {
+                self.logic[name].apply(this, [params])
             }
         }
 
-        self.pause_play = function () {
-            let player = self.get_html()
-            return player[(player.paused) ? ('play') : ('pause')]()
-        }
+        self.logic = {
+            cinema_mode: function () {
+                let recs = self.get_video().closest(
+                    self.selectors.columns
+                ).nextElementSibling
 
-        self.rewind = function (gap) {
-            let player = self.get_html()
-            return player.currentTime = player.currentTime + gap
-        }
+                if (
+                    recs &&
+                    recs.style.display === "none"
+                ) {
+                    recs.style.display = null
+                } else {
+                    recs.style.display = "none"
+                }
+            },
+            pause_play: function () {
+                let video = self.get_video()
+                return video[(video.paused) ? ("play") : ("pause")]()
+            },
+            rewind: function (gap) {
+                let video = self.get_video()
+                return video.currentTime = video.currentTime + gap
+            },
+            captions: function () {
+                let video = self.get_video()
+                if (video && video.textTracks.length > 0) {
+                    let track = video.textTracks[0]
+                    if (!track) {
+                        return null
+                    }
+                    track.mode = track.mode === 'showing' ? 'hidden' : 'showing'
+                    return track.mode
+                }
+            },
+            move_to: function (number) {
+                let video = self.get_video()
+                return video.currentTime = video.duration * number / 10
+            },
+            change_speed: function (gap) {
+                let video = self.get_video()
+                let end_speed = video.playbackRate + gap
 
-        self.move_to = function (
-            number
-        ) {
-            let player = self.get_html()
+                if (
+                    end_speed <= self.config.max_speed &&
+                    end_speed >= self.config.min_speed
+                ) {
+                    video.playbackRate = end_speed
+                }
 
-            if (number === 0) {
-                return player.currentTime = 0
+                self.ui_logic.show_speed_label()
+
+                if (self._timeout) {
+                    clearTimeout(self._timeout)
+                }
+
+                self._timeout = setTimeout(
+                    self.ui_logic.hide_speed_label,
+                    1000
+                )
             }
-
-            return player.currentTime = player.duration * number / 10
         }
 
-        self.captions = function () {
-            // профессиАнальный костыль
-            document.querySelector(self.captions_selector).click()
-            document.querySelector(self.captions_selector).click()
-        }
+        self.ui_logic = {
+            show_speed_label: function () {
+                let video = self.get_video()
+                let label = self.get_speed_label()
+                let rate = video.playbackRate.toFixed(2)
 
-        self.cinema_mode = function () {
-            let recs = document.querySelector('video').closest(
-                self.columns_selector
-            ).nextElementSibling
-
-            if (recs && recs.style.display === 'none') {
-                recs.style.display = null
-            } else {
-                recs.style.display = 'none'
+                return label.firstElementChild.textContent = `${rate}x`
+            },
+            hide_speed_label: function () {
+                self.get_speed_label().remove()
             }
         }
 
-        self.operations = {
+        self.logic_config = {
             increase_speed: {
-                key: 'Period',
-                make: self.make_operation,
-                params: ['change_speed', 0.25]
+                key: "Period",
+                make: self.make_logic,
+                params: [
+                    "change_speed",
+                    self.config.speed_gap
+                ]
             },
             decrease_speed: {
-                key: 'Comma',
-                make: self.make_operation,
-                params: ['change_speed', -0.25]
+                key: "Comma",
+                make: self.make_logic,
+                params: [
+                    "change_speed",
+                    -self.config.speed_gap
+                ]
             },
             captions: {
-                key: 'KeyC',
-                make: self.make_operation,
-                params: ['captions']
+                key: "KeyC",
+                make: self.make_logic,
+                params: ["captions"]
             },
             cinema: {
-                key: 'KeyT',
-                make: self.make_operation,
-                params: ['cinema_mode']
+                key: "KeyT",
+                make: self.make_logic,
+                params: ["cinema_mode"]
             },
             forward: {
-                key: 'KeyL',
-                make: self.make_operation,
-                params: ['rewind', 15]
+                key: "KeyL",
+                make: self.make_logic,
+                params: [
+                    "rewind",
+                    self.config.rewind_gap
+                ]
             },
             play_pause: {
-                key: 'KeyK',
-                make: self.make_operation,
-                params: ['pause_play']
+                key: "KeyK",
+                make: self.make_logic,
+                params: ["pause_play"]
             },
             back: {
-                key: 'KeyJ',
-                make: self.make_operation,
-                params: ['rewind', -15]
+                key: "KeyJ",
+                make: self.make_logic,
+                params: [
+                    "rewind",
+                    -self.config.rewind_gap
+                ]
             },
             to_0: {
-                key: 'Digit0',
-                make: self.make_operation,
-                params: ['move_to', 0]
+                key: "Digit0",
+                make: self.make_logic,
+                params: ["move_to", 0]
             },
             to_10: {
-                key: 'Digit1',
-                make: self.make_operation,
-                params: ['move_to', 1]
+                key: "Digit1",
+                make: self.make_logic,
+                params: ["move_to", 1]
             },
             to_20: {
-                key: 'Digit2',
-                make: self.make_operation,
-                params: ['move_to', 2]
+                key: "Digit2",
+                make: self.make_logic,
+                params: ["move_to", 2]
             },
             to_30: {
-                key: 'Digit3',
-                make: self.make_operation,
-                params: ['move_to', 3]
+                key: "Digit3",
+                make: self.make_logic,
+                params: ["move_to", 3]
             },
             to_40: {
-                key: 'Digit4',
-                make: self.make_operation,
-                params: ['move_to', 4]
+                key: "Digit4",
+                make: self.make_logic,
+                params: ["move_to", 4]
             },
             to_50: {
-                key: 'Digit5',
-                make: self.make_operation,
-                params: ['move_to', 5]
+                key: "Digit5",
+                make: self.make_logic,
+                params: ["move_to", 5]
             },
             to_60: {
-                key: 'Digit6',
-                make: self.make_operation,
-                params: ['move_to', 6]
+                key: "Digit6",
+                make: self.make_logic,
+                params: ["move_to", 6]
             },
             to_70: {
-                key: 'Digit7',
-                make: self.make_operation,
-                params: ['move_to', 7]
+                key: "Digit7",
+                make: self.make_logic,
+                params: ["move_to", 7]
             },
             to_80: {
-                key: 'Digit8',
-                make: self.make_operation,
-                params: ['move_to', 8]
+                key: "Digit8",
+                make: self.make_logic,
+                params: ["move_to", 8]
             },
             to_90: {
-                key: 'Digit9',
-                make: self.make_operation,
-                params: ['move_to', 9]
+                key: "Digit9",
+                make: self.make_logic,
+                params: ["move_to", 9]
             }
         }
 
-        self.set_custom_control = function () {
+        self.init = function () {
             let key_dict = {}
 
-            for (let operation_name in self.operations) {
-                let operation = self.operations[operation_name]
-                key_dict[operation.key] = operation
+            for (let logic_name in self.logic_config) {
+                let logic = self.logic_config[logic_name]
+                key_dict[logic.key] = logic
             }
 
             document.addEventListener(
-                'keydown',
+                "keydown",
                 (e) => {
 
                     if (e.code in key_dict) {
-                        let operation = key_dict[e.code]
-                        operation.make(...operation.params)
+                        let logic = key_dict[e.code]
+                        logic.make(...logic.params)
                     }
                 }
             )
 
 
             let c = 0
-            let max = 5
 
             let _i = setInterval(
                 () => {
-                    let player = self.get_html()
+                    let video = self.get_video()
 
-                    if (c >= max) {
+                    if (c >= self._retrys) {
                         clearInterval(_i)
                     }
 
-                    if (player) {
-                        player.addEventListener(
-                            'ratechange',
+                    if (video) {
+                        video.addEventListener(
+                            "ratechange",
                             function () {
-                                self.ui_show_speed()
+                                self.ui_logic.show_speed_label()
                             }
                         )
                         clearInterval(_i)
                     }
-
                     c++
                 },
-                1000
+                self._inverval_time
             )
-
-
         }
 
         return {
-            operations: self.operations,
-            set_custom_control: self.set_custom_control,
-            get_html: self.get_html,
-            make_operation: self.make_operation
+            config: self.config,
+            init: self.init
+        }
+    }
+)();
+
+(
+    () => {
+        if (document.readyState === "loading") {
+            document.addEventListener(
+                "DOMContentLoaded",
+                function () {
+                    VKVideoPlayer.init()
+                }
+            )
+        } else {
+            VKVideoPlayer.init()
         }
     }
 )()
 
 
-VKVideoPlayer.set_custom_control()
+

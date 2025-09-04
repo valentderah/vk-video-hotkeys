@@ -117,6 +117,14 @@ const Render = () => {
     const versionElement = document.getElementById('version')
     const tableElement = document.getElementById('table')
 
+    if (
+        !titleElement ||
+        !versionElement ||
+        !tableElement
+    ) {
+        return
+    }
+
     titleElement.innerHTML = Components.Title(
         Message("colored_logo")
     )
