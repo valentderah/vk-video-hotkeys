@@ -8,10 +8,10 @@ VKVideoPlayer = (
 
         self.config = {
             logic_config: self.logic_config,
-            speed_gap: 0.25,
-            rewind_gap: 15, // seconds
-            min_speed: 0.25,
-            max_speed: 2.00
+            speed_gap: 0.25, // decimal
+            min_speed: 0.25, // decimal
+            max_speed: 2.00, // decimal
+            rewind_gap: 15 // seconds
         }
 
         self.selectors = {
@@ -89,6 +89,15 @@ VKVideoPlayer = (
             }
         }
 
+        self.make_ui_logic = function (
+            name,
+            params
+        ) {
+            if (self.can_make_logic()) {
+                self.ui_logic[name].apply(this, [params])
+            }
+        }
+
         self.logic = {
             cinema_mode: function () {
                 let recs = self.get_video().closest(
@@ -137,7 +146,20 @@ VKVideoPlayer = (
                 ) {
                     video.playbackRate = end_speed
                 }
+            }
+        }
 
+        self.ui_logic = {
+            show_speed_label: function () {
+                let video = self.get_video()
+                let label = self.get_speed_label()
+                let rate = video.playbackRate.toFixed(2)
+                return label.firstElementChild.textContent = `${rate}x`
+            },
+            hide_speed_label: function () {
+                self.get_speed_label().remove()
+            },
+            show_speed_label_temp: function () {
                 self.ui_logic.show_speed_label()
 
                 if (self._timeout) {
@@ -151,116 +173,179 @@ VKVideoPlayer = (
             }
         }
 
-        self.ui_logic = {
-            show_speed_label: function () {
-                let video = self.get_video()
-                let label = self.get_speed_label()
-                let rate = video.playbackRate.toFixed(2)
-
-                return label.firstElementChild.textContent = `${rate}x`
-            },
-            hide_speed_label: function () {
-                self.get_speed_label().remove()
-            }
-        }
-
         self.logic_config = {
             increase_speed: {
                 key: "Period",
-                make: self.make_logic,
-                params: [
-                    "change_speed",
-                    self.config.speed_gap
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: [
+                            "change_speed",
+                            self.config.speed_gap
+                        ]
+                    },
+                    {
+                        func: self.make_ui_logic,
+                        params: ["show_speed_label_temp"]
+                    }
                 ]
             },
             decrease_speed: {
                 key: "Comma",
-                make: self.make_logic,
-                params: [
-                    "change_speed",
-                    -self.config.speed_gap
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: [
+                            "change_speed",
+                            -self.config.speed_gap
+                        ]
+                    },
+                    {
+                        func: self.make_ui_logic,
+                        params: ["show_speed_label_temp"]
+                    }
                 ]
             },
             captions: {
                 key: "KeyC",
-                make: self.make_logic,
-                params: ["captions"]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["captions"]
+                    }
+                ]
             },
             cinema: {
                 key: "KeyT",
-                make: self.make_logic,
-                params: ["cinema_mode"]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["cinema_mode"]
+                    }
+                ]
             },
             forward: {
                 key: "KeyL",
-                make: self.make_logic,
-                params: [
-                    "rewind",
-                    self.config.rewind_gap
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: [
+                            "rewind",
+                            self.config.rewind_gap
+                        ]
+                    }
                 ]
             },
             play_pause: {
                 key: "KeyK",
-                make: self.make_logic,
-                params: ["pause_play"]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["pause_play"]
+                    }
+                ]
             },
             back: {
                 key: "KeyJ",
-                make: self.make_logic,
-                params: [
-                    "rewind",
-                    -self.config.rewind_gap
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: [
+                            "rewind",
+                            -self.config.rewind_gap
+                        ]
+                    }
                 ]
             },
             to_0: {
                 key: "Digit0",
-                make: self.make_logic,
-                params: ["move_to", 0]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 0]
+                    }
+                ]
             },
             to_10: {
                 key: "Digit1",
-                make: self.make_logic,
-                params: ["move_to", 1]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 1]
+                    }
+                ]
             },
             to_20: {
                 key: "Digit2",
-                make: self.make_logic,
-                params: ["move_to", 2]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 2]
+                    }
+                ]
             },
             to_30: {
                 key: "Digit3",
-                make: self.make_logic,
-                params: ["move_to", 3]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 3]
+                    }
+                ]
             },
             to_40: {
                 key: "Digit4",
-                make: self.make_logic,
-                params: ["move_to", 4]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 4]
+                    }
+                ]
             },
             to_50: {
                 key: "Digit5",
-                make: self.make_logic,
-                params: ["move_to", 5]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 5]
+                    }
+                ]
             },
             to_60: {
                 key: "Digit6",
-                make: self.make_logic,
-                params: ["move_to", 6]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 6]
+                    }
+                ]
             },
             to_70: {
                 key: "Digit7",
-                make: self.make_logic,
-                params: ["move_to", 7]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 7]
+                    }
+                ]
             },
             to_80: {
                 key: "Digit8",
-                make: self.make_logic,
-                params: ["move_to", 8]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 8]
+                    }
+                ]
             },
             to_90: {
                 key: "Digit9",
-                make: self.make_logic,
-                params: ["move_to", 9]
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ["move_to", 9]
+                    }
+                ]
             }
         }
 
@@ -269,7 +354,9 @@ VKVideoPlayer = (
 
             for (let logic_name in self.logic_config) {
                 let logic = self.logic_config[logic_name]
-                key_dict[logic.key] = logic
+                if ('key' in logic) {
+                    key_dict[logic.key] = logic
+                }
             }
 
             document.addEventListener(
@@ -278,34 +365,12 @@ VKVideoPlayer = (
 
                     if (e.code in key_dict) {
                         let logic = key_dict[e.code]
-                        logic.make(...logic.params)
+                        // multiple funcs call
+                        for (let i in logic.make) {
+                            logic.make[i].func(...logic.make[i].params)
+                        }
                     }
                 }
-            )
-
-
-            let c = 0
-
-            let _i = setInterval(
-                () => {
-                    let video = self.get_video()
-
-                    if (c >= self._retrys) {
-                        clearInterval(_i)
-                    }
-
-                    if (video) {
-                        video.addEventListener(
-                            "ratechange",
-                            function () {
-                                self.ui_logic.show_speed_label()
-                            }
-                        )
-                        clearInterval(_i)
-                    }
-                    c++
-                },
-                self._inverval_time
             )
         }
 
@@ -317,7 +382,7 @@ VKVideoPlayer = (
 )();
 
 (
-    () => {
+    function () {
         if (document.readyState === "loading") {
             document.addEventListener(
                 "DOMContentLoaded",
