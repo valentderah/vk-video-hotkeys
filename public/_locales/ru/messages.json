@@ -74,6 +74,12 @@
   "vk_channel_link": {
     "message": "https://vk.com/valentderah"
   },
+  "hold_space": {
+    "message": "Удержание пробела"
+  },
+  "hold_space_desc": {
+    "message": "Видео ускоряется до 2x"
+  },
   "ext_version": {
     "message": "Версия расширения"
   }
