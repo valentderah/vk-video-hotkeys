@@ -1,12 +1,7 @@
 import React from 'react';
-import { t } from '../utils/i18n';
+import { socialLinks } from '../data';
 
 const SocialLinks = () => {
-    const socialLinks = {
-        vk: t('vk_channel_link'),
-        tg: t('tg_channel_link')
-    };
-
     const handleSocialClick = (platform) => {
         chrome.tabs.create({ url: socialLinks[platform] });
     };

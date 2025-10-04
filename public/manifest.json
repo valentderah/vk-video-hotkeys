@@ -16,14 +16,14 @@
   "content_scripts": [
     {
       "js": [
-        "background.js",
-        "popup.js"
+        "background.js"
       ],
       "matches": [
         "https://vk.com/video*",
         "https://vkvideo.ru/*",
         "https://vkvideo.com/*",
-        "https://vkvideo.by/*"
+        "https://vkvideo.by/*",
+        "https://vksport.vkvideo.ru/*"
       ]
     }
   ]
