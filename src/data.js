@@ -8,7 +8,8 @@ export const tableData = [
     { key: t("KeyC"), action: t("turn_on_off_subs") },
     { key: t("KeyT"), action: t("turn_on_off_cinema") },
     { key: t("decrease_speed_button"), action: t("decrease_speed") },
-    { key: t("increase_speed_button"), action: t("increase_speed") }
+    { key: t("increase_speed_button"), action: t("increase_speed") },
+    { key: t("hold_space"), action: t("hold_space_desc") }
 ];
 
 export const socialLinks = {

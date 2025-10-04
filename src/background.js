@@ -487,7 +487,7 @@ VKVideoPlayer = (
         self.events_config = {
             forward_click: {
                 element: self.selectors.ext.forward_label,
-                action: "click",
+                event: "click",
                 make: [
                     {
                         func: self.make_logic,
@@ -500,7 +500,7 @@ VKVideoPlayer = (
             },
             back_click: {
                 element: self.selectors.ext.back_label,
-                action: "click",
+                event: "click",
                 make: [
                     {
                         func: self.make_logic,
@@ -595,7 +595,7 @@ VKVideoPlayer = (
             for (let event_name in self.events_config) {
                 let event = self.events_config[event_name]
                 document.querySelector(event.element).addEventListener(
-                    event.action,
+                    event.event,
                     function () {
                         for (let i in event.make) {
                             event.make[i].func(...event.make[i].params)
