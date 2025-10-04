@@ -3,11 +3,13 @@ VKVideoPlayer = (
         let self = this
 
         self._timeout = null
+        self._show_timeout = null
         self._inverval_time = 1000
         self._retrys = 10
         self._original_speed = 1.0
         self._space_press_timeout = null
         self._is_holding_space = false
+        self._base_ui_timeout = 200
 
         self.config = {
             speed_gap: 0.25, // decimal
@@ -204,7 +206,7 @@ VKVideoPlayer = (
                     const video = self.get_video();
                     self._original_speed = video.playbackRate;
                     video.playbackRate = 2.0;
-                }, 200);
+                }, self._base_ui_timeout);
             },
             handle_space_up: function () {
                 if (self._space_press_timeout) {
@@ -216,7 +218,6 @@ VKVideoPlayer = (
                 if (self._is_holding_space) {
                     const video = self.get_video();
                     video.playbackRate = self._original_speed;
-                    self.make_ui_logic("show_speed_label_temp");
                     self._is_holding_space = false;
                 }
             }
@@ -230,19 +231,30 @@ VKVideoPlayer = (
                 return label.firstElementChild.textContent = `${rate}x`
             },
             hide_speed_label: function () {
-                self.get_speed_label().remove()
+                let el = document.querySelector(self.selectors.ext.speed_label)
+                if (el) {
+                    el.remove()
+                }
             },
-            show_speed_label_temp: function () {
-                self.ui_logic.show_speed_label()
+            show_speed_label_temp: function (with_timeout) {
+                clearTimeout(self._show_timeout)
+                clearTimeout(self._timeout)
 
-                if (self._timeout) {
-                    clearTimeout(self._timeout)
+                function callback() {
+                    self.ui_logic.show_speed_label()
+                    self._timeout = setTimeout(
+                        self.ui_logic.hide_speed_label,
+                        self._inverval_time
+                    )
                 }
 
-                self._timeout = setTimeout(
-                    self.ui_logic.hide_speed_label,
-                    1000
-                )
+                if (with_timeout) {
+                    self._show_timeout = setTimeout(
+                        callback, self._base_ui_timeout
+                    )
+                } else {
+                    callback()
+                }
             },
             show_rewind_label: function () {
                 if (self.get_rewind_label()) {
@@ -464,10 +476,6 @@ VKVideoPlayer = (
                     {
                         func: self.make_logic,
                         params: ['handle_space_down']
-                    },
-                    {
-                        func: self.make_ui_logic,
-                        params: ['show_speed_label_temp']
                     }
                 ]
             },
@@ -478,10 +486,6 @@ VKVideoPlayer = (
                     {
                         func: self.make_logic,
                         params: ['handle_space_up']
-                    },
-                    {
-                        func: self.make_ui_logic,
-                        params: ['show_speed_label_temp']
                     }
                 ]
             }
