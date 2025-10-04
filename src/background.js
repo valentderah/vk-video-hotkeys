@@ -193,18 +193,17 @@ VKVideoPlayer = (
                     video.playbackRate = end_speed
                 }
             },
-            handle_space_down: function() {
+            handle_space_down: function () {
                 self._space_press_timeout = setTimeout(() => {
                     self._space_press_timeout = null;
                     self._is_holding_space = true;
-                    
+
                     const video = self.get_video();
                     self._original_speed = video.playbackRate;
                     video.playbackRate = 2.0;
-                    self.make_ui_logic("show_speed_label_temp");
                 }, 200);
             },
-            handle_space_up: function() {
+            handle_space_up: function () {
                 if (self._space_press_timeout) {
                     clearTimeout(self._space_press_timeout);
                     self._space_press_timeout = null;
@@ -267,6 +266,7 @@ VKVideoPlayer = (
         self.logic_config = {
             increase_speed: {
                 key: "Period",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -283,6 +283,7 @@ VKVideoPlayer = (
             },
             decrease_speed: {
                 key: "Comma",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -299,6 +300,7 @@ VKVideoPlayer = (
             },
             captions: {
                 key: "KeyC",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -308,6 +310,7 @@ VKVideoPlayer = (
             },
             cinema: {
                 key: "KeyT",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -317,6 +320,7 @@ VKVideoPlayer = (
             },
             forward: {
                 key: "KeyL",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -329,6 +333,7 @@ VKVideoPlayer = (
             },
             play_pause: {
                 key: "KeyK",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -338,6 +343,7 @@ VKVideoPlayer = (
             },
             back: {
                 key: "KeyJ",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -350,6 +356,7 @@ VKVideoPlayer = (
             },
             to_0: {
                 key: "Digit0",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -359,6 +366,7 @@ VKVideoPlayer = (
             },
             to_10: {
                 key: "Digit1",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -368,6 +376,7 @@ VKVideoPlayer = (
             },
             to_20: {
                 key: "Digit2",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -377,6 +386,7 @@ VKVideoPlayer = (
             },
             to_30: {
                 key: "Digit3",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -386,6 +396,7 @@ VKVideoPlayer = (
             },
             to_40: {
                 key: "Digit4",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -395,6 +406,7 @@ VKVideoPlayer = (
             },
             to_50: {
                 key: "Digit5",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -404,6 +416,7 @@ VKVideoPlayer = (
             },
             to_60: {
                 key: "Digit6",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -413,6 +426,7 @@ VKVideoPlayer = (
             },
             to_70: {
                 key: "Digit7",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -422,6 +436,7 @@ VKVideoPlayer = (
             },
             to_80: {
                 key: "Digit8",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -431,6 +446,7 @@ VKVideoPlayer = (
             },
             to_90: {
                 key: "Digit9",
+                event: "keydown",
                 make: [
                     {
                         func: self.make_logic,
@@ -438,16 +454,33 @@ VKVideoPlayer = (
                     }
                 ]
             },
-            space_bar: {
+            handle_space_down: {
                 key: 'Space',
-                keydown: {
-                    func: self.make_logic,
-                    params: ['handle_space_down']
-                },
-                keyup: {
-                    func: self.make_logic,
-                    params: ['handle_space_up']
-                }
+                event: 'keydown',
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ['handle_space_down']
+                    },
+                    {
+                        func: self.make_ui_logic,
+                        params: ['show_speed_label_temp']
+                    }
+                ]
+            },
+            handle_space_up: {
+                key: 'Space',
+                event: 'keyup',
+                make: [
+                    {
+                        func: self.make_logic,
+                        params: ['handle_space_up']
+                    },
+                    {
+                        func: self.make_ui_logic,
+                        params: ['show_speed_label_temp']
+                    }
+                ]
             }
         }
 
@@ -481,40 +514,34 @@ VKVideoPlayer = (
         }
 
         self.init_hotkeys = function () {
-            const keydown_actions = {};
-            const keyup_actions = {};
+            const key_actions = {
+                keydown: {},
+                keyup: {}
+            };
 
             for (const name in self.logic_config) {
                 const config = self.logic_config[name];
-                if (!config.key) continue;
+                if (!config.key || !config.make) continue;
 
-                let actions_on_keydown = null;
-                if (config.make) {
-                    actions_on_keydown = config.make;
-                }
-                if (config.keydown) {
-                    actions_on_keydown = Array.isArray(config.keydown) ? config.keydown : [config.keydown];
+                const event_type = config.event || 'keydown';
+
+                if (!key_actions[event_type][config.key]) {
+                    key_actions[event_type][config.key] = [];
                 }
 
-                if (actions_on_keydown) {
-                    keydown_actions[config.key] = actions_on_keydown;
-                }
-
-                if (config.keyup) {
-                    keyup_actions[config.key] = Array.isArray(config.keyup) ? config.keyup : [config.keyup];
-                }
+                key_actions[event_type][config.key].push(...config.make);
             }
 
             document.addEventListener(
                 "keydown", e => {
                     if (!self.can_make_logic()) return;
 
-                    const actions = keydown_actions[e.code];
+                    const actions = key_actions.keydown[e.code];
                     if (actions) {
                         e.preventDefault();
                         e.stopPropagation();
 
-                        if (e.repeat && e.code === 'Space') {
+                        if (e.repeat) {
                             return;
                         }
 
@@ -522,15 +549,13 @@ VKVideoPlayer = (
                             action.func(...action.params);
                         }
                     }
-                },
-                true
-            );
+                }, true);
 
             document.addEventListener(
                 "keyup", e => {
                     if (!self.can_make_logic()) return;
 
-                    const actions = keyup_actions[e.code];
+                    const actions = key_actions.keyup[e.code];
                     if (actions) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -539,9 +564,7 @@ VKVideoPlayer = (
                             action.func(...action.params);
                         }
                     }
-                },
-                true
-            );
+                }, true);
         }
 
         self.wait_for_player = function () {
