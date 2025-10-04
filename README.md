@@ -1,5 +1,5 @@
 <div>
-  <h2>Горячие клавиши VK Video <img src="public/images/icon-32.png" width="20px"></h2>
+  <h2>Горячие клавиши VK Video <img src="public/images/icons/icon-32.png" width="20px"></h2>
   <p>Это расширение позволяети вернуть привычное для ютуба управление плеером на JKL.
 </div>
 
