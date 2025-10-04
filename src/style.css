@@ -1,11 +1,11 @@
 .center {
     margin: auto;
-    max-width: 300px;
+    max-width: 333px;
     width: 100%
 }
 
 .min-v300 {
-    min-width: 300px;
+    min-width: 333px;
 }
 
 div.table-title {
@@ -50,7 +50,7 @@ div.table-title {
     margin-bottom: 15px;
     font-size: 0.9em;
     font-family: sans-serif;
-    min-width: 300px;
+    min-width: 333px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
 }

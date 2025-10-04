@@ -17,7 +17,7 @@ const App = () => {
         <div className="center">
             <Title title={t("colored_logo")} />
             <Text name={`${t('ext_version')}: ${version}`} classes={'gray-small-text center-text xx-small w-100'} />
-            <div className=".min-v300">
+            <div className="min-v300">
                 <Table threads={tableData} />
             </div>
             <SocialLinks />

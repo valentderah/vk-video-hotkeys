@@ -78,7 +78,7 @@
     "message": "Удержание пробела"
   },
   "hold_space_desc": {
-    "message": "Видео ускоряется до 2x"
+    "message": "Видео ускоряется до (2x)"
   },
   "ext_version": {
     "message": "Версия расширения"

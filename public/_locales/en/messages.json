@@ -72,7 +72,7 @@
     "message": "Space Hold"
   },
   "hold_space_desc": {
-    "message": "Video speeds up to 2x"
+    "message": "Video speeds up to (2x)"
   },
   "ext_version": {
     "message": "Extension version"
