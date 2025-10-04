@@ -28,6 +28,7 @@ VKVideoPlayer = (
             ext_speed_label: "#ext-vk-video-controller",
             ext_rewind_label: "#ext-vk-video-rewind-controller",
             editable_input: ".vkitCommentInputContentEditable",
+            header_input: ".vkuiSearch__nativeInput",
             ext: {
                 speed_label: "#ext-vk-video-controller",
                 back_label: "#ext-vk-video-back-controller",
@@ -114,14 +115,16 @@ VKVideoPlayer = (
         }
 
         self.can_make_logic = function () {
-            let classes = document.activeElement.classList
+            let element = document.activeElement
+            let classes = element.classList
 
             let has_activity = classes.toString().includes(
                 self.selectors.editable_input.slice(1)
             )
 
+            let is_input = element.tagName === 'INPUT'
             return (
-                !has_activity &&
+                !has_activity && !is_input &&
                 self.get_video()
             )
         }
