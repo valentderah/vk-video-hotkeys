@@ -1,34 +1,37 @@
 <div>
-  <h2>Горячие клавиши VK Video <img src="public/images/icons/icon-32.png" width="20px"></h2>
-  <p>Это расширение позволяети вернуть привычное для ютуба управление плеером на JKL.
+  English | <a href="README.ru.md">Русский</a>
+</div>
+<div>
+<h2>VK Video Hotkeys <img src="public/images/icons/icon-32.png" width="20px"></h2>
+<p>This extension brings back the familiar YouTube player controls on JKL keys.</p>
 </div>
 
-| Клавиша           | Действие                            |
-|-------------------|-------------------------------------|
-| J (О)             | Назад на 15 секунд                  |
-| K (Л)             | Пауза / Проигрывание                |
-| L (Д)             | Вперед на 15 секунд                 |
-| 1-9               | Перемотка видео в процентах         |
-| C (С)             | Включить/Выключить субтитры         |
-| T (Е)             | Включить/Выключить режим кинотеатра |
-| \<                | Уменьшить скорость воспроизведения  |
-| \>                | Увеличить скорость воспроизведения  |
-| Удержание пробела | Ускорение видео до (2x)             |
+| Key           | Action                   |
+|---------------|--------------------------|
+| J             | Rewind 15 seconds        |
+| K             | Pause / Play             |
+| L             | Fast forward 15 seconds  |
+| 1-9           | Seek video by percentage |
+| C             | Toggle subtitles         |
+| T             | Toggle theater mode      |
+| <             | Decrease playback speed  |
+| \>            | Increase playback speed  |
+| Hold Spacebar | Speed up video to (2x)   |
 
 <div>
-<h2>Установка расширения</h2>
+<h2>Extension Installation</h2>
 
 <details>
-<summary>Cложная установка</summary>
+<summary>Manual Installation</summary>
 
-1. Открыть страницу (chrome://extensions)
-2. Включить режим разработчика (правый верхний угол)
-3. Загрузить распакованное расширение (левый верхний угол)
+1. Open the extensions page (chrome://extensions)
+2. Enable developer mode (top right corner)
+3. Load unpacked extension (top left corner)
 
 </details>
 
 <details>
-<summary>Расширение в магазинах расширений</summary> 
+<summary>Extension in stores</summary>
 
 1. https://vk.cc/cKRyjf
 
