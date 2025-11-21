@@ -1,7 +1,35 @@
 export class VideoController {
-    constructor(selectors, config) {
+    constructor(eventBus, selectors, config) {
+        this.eventBus = eventBus;
         this.config = config;
         this.selectors = selectors;
+        this.originalSpeed = 1.0;
+
+        this.listenToEvents();
+    }
+
+    listenToEvents() {
+        this.eventBus.on('request:changeSpeed', ({gap}) => this.changeSpeed(gap));
+        this.eventBus.on('request:toggleCaptions', () => this.toggleCaptions());
+        this.eventBus.on('request:toggleCinema', () => this.toggleCinemaMode());
+        this.eventBus.on('request:seek', ({gap}) => this.seek(gap));
+        this.eventBus.on('request:togglePlay', () => this.togglePlay());
+        this.eventBus.on('request:seekToPercent', ({percent}) => this.seekToPercent(percent));
+        this.eventBus.on('request:holdSpeed', ({holdSpeed}) => {
+            this.originalSpeed = this.playbackRate;
+            this.playbackRate = holdSpeed;
+            this.eventBus.emit('video:speedChanged');
+        });
+        this.eventBus.on('request:releaseHoldSpeed', () => {
+            this.playbackRate = this.originalSpeed;
+            this.eventBus.emit('video:speedChanged');
+        });
+    }
+
+    checkAndEmitPlayerState() {
+        if (this.video) {
+            this.eventBus.emit('video:player_found');
+        }
     }
 
     get video() {
@@ -56,7 +84,7 @@ export class VideoController {
         }
     }
 
-    changeSpeed(gap, uiCallback) {
+    changeSpeed(gap) {
         const video = this.video;
         if (!video) return;
 
@@ -70,11 +98,12 @@ export class VideoController {
 
         video.playbackRate = Math.round(newSpeed * 100) / 100;
 
-        if (uiCallback) uiCallback();
+        this.eventBus.emit('video:speedChanged');
     }
 
     get playbackRate() {
-        return this.video ? this.video.playbackRate : 1.0;
+        const video = this.video;
+        return video ? video.playbackRate : 1.0;
     }
 
     set playbackRate(value) {

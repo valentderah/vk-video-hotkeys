@@ -1,7 +1,7 @@
 import React from 'react';
 import {t} from '../../shared/utils/i18n';
 
-const Table = ({threads}) => {
+const Table = ({data}) => {
     return (
         <table className="table-fill styled-table">
             <thead>
@@ -11,10 +11,10 @@ const Table = ({threads}) => {
             </tr>
             </thead>
             <tbody className="">
-            {threads.map((thread, index) => (
-                <tr key={index}>
-                    <td className="text-left">{thread.key}</td>
-                    <td className="text-left">{thread.action}</td>
+            {data.map((row) => (
+                <tr key={row.action}>
+                    <td className="text-left">{row.key}</td>
+                    <td className="text-left">{row.action}</td>
                 </tr>
             ))}
             </tbody>

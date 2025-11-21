@@ -2,18 +2,25 @@ import {getSpeedLabel} from "../templates/speedLabel";
 import {getControls} from "../templates/controls";
 
 export class UIController {
-    constructor(videoController, selectors, config) {
-        this.videoController = videoController;
+    constructor(eventBus, selectors, config) {
+        this.eventBus = eventBus;
         this.selectors = selectors;
         this.config = config;
         this.timeouts = {
             showSpeed: null,
         };
         this.intervalTime = 1000;
+
+        this.listenToEvents();
+    }
+    
+    get video() {
+        // This is one of the few places direct DOM access is still simplest.
+        return document.querySelector(this.selectors.player.video);
     }
 
-    get video() {
-        return this.videoController.video;
+    listenToEvents() {
+        this.eventBus.on('video:speedChanged', () => this.showSpeedLabelTemp());
     }
 
     get speedLabel() {
@@ -30,16 +37,17 @@ export class UIController {
             const video = this.video;
             if (!video) return null;
 
+            if (video.parentNode) {
+                video.parentNode.style.position = 'relative';
+            }
+
             const html = getSpeedLabel(
                 video.playbackRate,
                 this.selectors.ext.speedLabel.slice(1)
             );
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html");
-            label = doc.body.firstElementChild;
-
-            video.parentNode.insertBefore(label, video);
+            video.parentNode.insertAdjacentHTML('afterbegin', html);
+            label = this.speedLabel;
         }
         return label;
     }
@@ -75,15 +83,12 @@ export class UIController {
         const timeSelector = document.querySelector(this.selectors.player.time);
         if (!timeSelector) return;
 
-        const parser = new DOMParser();
         const html = getControls(
             this.selectors.ext.backLabel.slice(1),
             this.selectors.ext.forwardLabel.slice(1)
         );
-        const doc = parser.parseFromString(html, "text/html");
-        const controls = doc.body.firstElementChild;
 
-        timeSelector.parentNode.insertBefore(controls, timeSelector);
+        timeSelector.insertAdjacentHTML('beforebegin', html);
         this.initControlEvents();
     }
 
@@ -94,14 +99,14 @@ export class UIController {
         if (backBtn) {
             backBtn.onclick = (e) => {
                 e.stopPropagation();
-                this.videoController.seek(-this.config.rewindGap);
+                this.eventBus.emit('request:seek', {gap: -this.config.rewindGap});
             };
         }
 
         if (forwardBtn) {
             forwardBtn.onclick = (e) => {
                 e.stopPropagation();
-                this.videoController.seek(this.config.rewindGap);
+                this.eventBus.emit('request:seek', {gap: this.config.rewindGap});
             };
         }
     }

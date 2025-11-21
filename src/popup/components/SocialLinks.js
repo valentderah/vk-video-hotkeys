@@ -2,18 +2,21 @@ import React from 'react';
 import {socialLinks} from '../../shared/utils/constants';
 
 const SocialLinks = () => {
-    const handleSocialClick = (platform) => {
-        chrome.tabs.create({url: socialLinks[platform]});
+    const handleSocialClick = (url) => {
+        chrome.tabs.create({url});
     };
 
     return (
         <div className="icon-row max-height-15px">
-            <div className="icon cursor-pointer tg-link" onClick={() => handleSocialClick('tg')}>
-                <img src="./images/social/tg.svg" width="30px" alt="icon"/>
-            </div>
-            <div className="icon cursor-pointer vk-link" onClick={() => handleSocialClick('vk')}>
-                <img src="./images/social/vk.svg" width="30px" alt="icon"/>
-            </div>
+            {Object.entries(socialLinks).map(([platform, url]) => (
+                <div
+                    key={platform}
+                    className={`icon cursor-pointer ${platform}-link`}
+                    onClick={() => handleSocialClick(url)}
+                >
+                    <img src={`./images/social/${platform}.svg`} width="30px" alt={`${platform} icon`}/>
+                </div>
+            ))}
         </div>
     );
 };

@@ -20,6 +20,10 @@ div.table-title {
     font-weight: bold;
 }
 
+.logo-colored {
+    color: #FF2B42; /* Or any other color you prefer */
+}
+
 .gray-small-text {
     color: #888888;
     font-size: 0.875rem;

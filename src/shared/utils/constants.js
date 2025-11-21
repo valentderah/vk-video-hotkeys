@@ -37,3 +37,5 @@ export const socialLinks = {
     vk: t("vk_channel_link"),
     tg: t("tg_channel_link"),
 };
+
+export const EXT_VERSION = chrome.runtime.getManifest().version;

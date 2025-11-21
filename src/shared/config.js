@@ -24,4 +24,5 @@ export const playerConfig = {
   minSpeed: 0.25,
   maxSpeed: 2.0,
   rewindGap: 15,
+  holdSpeed: 2.0,
 };
