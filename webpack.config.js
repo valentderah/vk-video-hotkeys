@@ -6,9 +6,9 @@ const miniExtractPlugin = require('mini-css-extract-plugin')
 
 const config = {
     entry: {
-        background: './src/background.js',
-        popup: './src/popup.js',
-        style: './src/style.css'
+        background: './src/content/index.js',
+        popup: './src/popup/index.js',
+        style: './src/popup/style.css'
     },
     output: {
         filename: '[name].js',
