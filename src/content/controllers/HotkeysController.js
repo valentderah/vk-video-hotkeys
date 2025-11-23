@@ -21,7 +21,7 @@ export class HotkeysController {
         this.keyConfig = {...defaultHotkeys};
 
         this.updateKeyConfig(this.keyConfig);
-        
+
         this.loadHotkeys();
 
         chrome.storage.onChanged.addListener((changes, area) => {
@@ -96,7 +96,8 @@ export class HotkeysController {
     }
 
     handleKeyup(e) {
-        if (e.code === this.keyConfig.speedHold) {
+        const actionName = this.actionMap[e.code];
+        if (actionName === 'speedHold') {
             e.preventDefault();
             e.stopPropagation();
             this.handleSpaceUp();

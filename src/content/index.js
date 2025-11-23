@@ -121,9 +121,15 @@ class VKVideoHotkeys {
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () =>
-        new VKVideoHotkeys().init()
-    );
+    document.addEventListener("DOMContentLoaded", () => {
+        if (!window._vkVideoHotkeysInitialized) {
+            window._vkVideoHotkeysInitialized = true;
+            new VKVideoHotkeys().init();
+        }
+    });
 } else {
-    new VKVideoHotkeys().init();
+    if (!window._vkVideoHotkeysInitialized) {
+        window._vkVideoHotkeysInitialized = true;
+        new VKVideoHotkeys().init();
+    }
 }
