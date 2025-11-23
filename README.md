@@ -6,6 +6,16 @@
 <p>This extension brings back the familiar YouTube player controls on JKL keys.</p>
 </div>
 
+## Features
+- **Familiar Hotkeys**: Use J, K, L for navigation like on YouTube.
+- **Speed Control**: Increase/decrease playback speed with `<` and `>`.
+- **UI Integration**: Adds visual rewind/forward buttons directly to the player interface.
+- **Hold for Speed**: Hold Spacebar to temporarily speed up video to 2x.
+- **Seek by %**: Use number keys 0-9 to jump to specific parts of the video.
+- **Customizable**: Rebind keys to your preference via the extension popup.
+
+## Default Controls
+
 | Key           | Action                   |
 |---------------|--------------------------|
 | J             | Rewind 15 seconds        |
@@ -24,16 +34,21 @@
 <details>
 <summary>Manual Installation</summary>
 
-1. Open the extensions page (chrome://extensions)
-2. Enable developer mode (top right corner)
-3. Load unpacked extension (top left corner)
+1. Download the latest release or clone this repository.
+2. Open the extensions page (`chrome://extensions`).
+3. Enable **Developer mode** (top right corner).
+4. Click **Load unpacked** (top left corner).
+5. Select the folder containing the extension manifest.
 
 </details>
 
 <details>
 <summary>Extension in stores</summary>
 
-1. https://vk.cc/cKRyjf
+1. [Chrome Web Store](https://vk.cc/cKRyjf)
 
 </details>
 </div>
+
+## Architecture
+See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed overview of the project structure.
