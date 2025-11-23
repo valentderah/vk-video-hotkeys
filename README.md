@@ -49,6 +49,3 @@
 
 </details>
 </div>
-
-## Architecture
-See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed overview of the project structure.

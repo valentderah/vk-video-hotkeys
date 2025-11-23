@@ -49,6 +49,3 @@
 
 </details>
 </div>
-
-## Архитектура
-Подробное описание структуры проекта см. в [ARCHITECTURE.ru.md](ARCHITECTURE.ru.md).
