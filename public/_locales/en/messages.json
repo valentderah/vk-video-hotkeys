@@ -76,5 +76,11 @@
   },
   "ext_version": {
     "message": "Extension version"
+  },
+  "reset_defaults": {
+    "message": "Reset to defaults"
+  },
+  "press_key": {
+    "message": "Press any key..."
   }
 }

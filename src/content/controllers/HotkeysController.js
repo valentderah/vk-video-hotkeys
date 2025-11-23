@@ -1,4 +1,6 @@
 import {defaultHotkeys, playerConfig} from "../../shared/config";
+import {getHotkeys} from "../../shared/utils/storage";
+import {STORAGE_KEYS} from "../../shared/utils/constants";
 
 export class HotkeysController {
     constructor(eventBus) {
@@ -17,31 +19,70 @@ export class HotkeysController {
         };
 
         this.keyConfig = {...defaultHotkeys};
-        this.actionMap = Object.entries(this.keyConfig).reduce((acc, [action, code]) => {
-            acc[code] = action;
-            return acc;
-        }, {});
+        this.actionMap = {};
+
+        this.loadHotkeys();
+
+        chrome.storage.onChanged.addListener((changes, area) => {
+            if (area === "sync" && changes[STORAGE_KEYS.HOTKEYS]) {
+                this.updateKeyConfig(changes[STORAGE_KEYS.HOTKEYS].newValue);
+            }
+        });
 
         this.actions = {
-            increaseSpeed: () => this.eventBus.emit('request:changeSpeed', {gap: playerConfig.speedGap}),
-            decreaseSpeed: () => this.eventBus.emit('request:changeSpeed', {gap: -playerConfig.speedGap}),
-            toggleCaptions: () => this.eventBus.emit('request:toggleCaptions'),
-            toggleCinema: () => this.eventBus.emit('request:toggleCinema'),
-            forward: () => this.eventBus.emit('request:seek', {gap: playerConfig.rewindGap}),
-            playPause: () => this.eventBus.emit('request:togglePlay'),
-            back: () => this.eventBus.emit('request:seek', {gap: -playerConfig.rewindGap}),
-            seek0: () => this.eventBus.emit('request:seekToPercent', {percent: 0}),
-            seek10: () => this.eventBus.emit('request:seekToPercent', {percent: 10}),
-            seek20: () => this.eventBus.emit('request:seekToPercent', {percent: 20}),
-            seek30: () => this.eventBus.emit('request:seekToPercent', {percent: 30}),
-            seek40: () => this.eventBus.emit('request:seekToPercent', {percent: 40}),
-            seek50: () => this.eventBus.emit('request:seekToPercent', {percent: 50}),
-            seek60: () => this.eventBus.emit('request:seekToPercent', {percent: 60}),
-            seek70: () => this.eventBus.emit('request:seekToPercent', {percent: 70}),
-            seek80: () => this.eventBus.emit('request:seekToPercent', {percent: 80}),
-            seek90: () => this.eventBus.emit('request:seekToPercent', {percent: 90}),
+            increaseSpeed: () =>
+                this.eventBus.emit("request:changeSpeed", {
+                    gap: playerConfig.speedGap,
+                }),
+            decreaseSpeed: () =>
+                this.eventBus.emit("request:changeSpeed", {
+                    gap: -playerConfig.speedGap,
+                }),
+            toggleCaptions: () => this.eventBus.emit("request:toggleCaptions"),
+            toggleCinema: () => this.eventBus.emit("request:toggleCinema"),
+            forward: () =>
+                this.eventBus.emit("request:seek", {gap: playerConfig.rewindGap}),
+            playPause: () => this.eventBus.emit("request:togglePlay"),
+            back: () =>
+                this.eventBus.emit("request:seek", {gap: -playerConfig.rewindGap}),
+            seek0: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 0}),
+            seek10: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 10}),
+            seek20: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 20}),
+            seek30: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 30}),
+            seek40: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 40}),
+            seek50: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 50}),
+            seek60: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 60}),
+            seek70: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 70}),
+            seek80: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 80}),
+            seek90: () =>
+                this.eventBus.emit("request:seekToPercent", {percent: 90}),
             speedHold: (e) => this.handleSpaceDown(e),
         };
+    }
+
+    async loadHotkeys() {
+        const hotkeys = await getHotkeys();
+        this.updateKeyConfig(hotkeys);
+    }
+
+    updateKeyConfig(hotkeys) {
+        this.keyConfig = {...defaultHotkeys, ...hotkeys};
+        this.actionMap = Object.entries(this.keyConfig).reduce(
+            (acc, [action, code]) => {
+                acc[code] = action;
+                return acc;
+            },
+            {}
+        );
     }
 
     handleKeydown(e) {

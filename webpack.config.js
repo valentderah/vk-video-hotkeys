@@ -8,7 +8,7 @@ const config = {
     entry: {
         background: './src/content/index.js',
         popup: './src/popup/index.js',
-        style: './src/popup/style.css'
+        style: './src/popup/style.scss'
     },
     output: {
         filename: '[name].js',
@@ -41,10 +41,11 @@ const config = {
                 }
             },
             {
-                test: /\.css$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: [
                     miniExtractPlugin.loader,
-                    'css-loader'
+                    'css-loader',
+                    'sass-loader'
                 ]
             }
         ]
