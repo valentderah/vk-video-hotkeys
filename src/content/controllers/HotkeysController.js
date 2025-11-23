@@ -19,8 +19,9 @@ export class HotkeysController {
         };
 
         this.keyConfig = {...defaultHotkeys};
-        this.actionMap = {};
 
+        this.updateKeyConfig(this.keyConfig);
+        
         this.loadHotkeys();
 
         chrome.storage.onChanged.addListener((changes, area) => {
