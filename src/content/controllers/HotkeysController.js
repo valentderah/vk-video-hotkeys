@@ -67,7 +67,6 @@ export class HotkeysController {
         this.timeouts.spacePress = setTimeout(() => {
             this.timeouts.spacePress = null;
             this.state.isHoldingSpace = true;
-            // Запрашиваем оригинальную скорость и затем устанавливаем новую
             this.eventBus.emit('request:holdSpeed', {holdSpeed: playerConfig.holdSpeed});
         }, this.config.baseUiTimeout);
     }

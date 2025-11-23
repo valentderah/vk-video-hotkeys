@@ -1,7 +1,7 @@
 import {playerConfig} from "../shared/config";
 import {selectors} from "../shared/utils/constants";
-import {VideoController} from "./controllers/VideoController";
-import {UIController} from "./controllers/UIController";
+import {PlayerController} from "./controllers/PlayerController";
+import {InterfaceController} from "./controllers/InterfaceController";
 import {HotkeysController} from "./controllers/HotkeysController";
 import {EventEmitter} from "../shared/utils/EventEmitter";
 
@@ -19,11 +19,19 @@ class VKVideoHotkeys {
         const eventBus = new EventEmitter();
 
         // Initialize modules
-        this.videoController = new VideoController(eventBus, selectors, playerConfig);
-        this.uiController = new UIController(eventBus, selectors, playerConfig);
+        this.playerController = new PlayerController(
+            eventBus,
+            selectors,
+            playerConfig
+        );
+        this.interfaceController = new InterfaceController(
+            eventBus,
+            selectors,
+            playerConfig
+        );
         this.hotkeysController = new HotkeysController(eventBus);
 
-        eventBus.on('video:player_found', () => this.state.isPlayerReady = true);
+        eventBus.on("video:player_found", () => (this.state.isPlayerReady = true));
     }
 
     canInteract() {
@@ -33,8 +41,7 @@ class VKVideoHotkeys {
         const isInput =
             element.tagName === "INPUT" || element.tagName === "TEXTAREA";
         const isContentEditable =
-            element.isContentEditable ||
-            element.matches(selectors.inputs.editable);
+            element.isContentEditable || element.matches(selectors.inputs.editable);
 
         return !isInput && !isContentEditable && this.state.isPlayerReady;
     }
@@ -46,8 +53,11 @@ class VKVideoHotkeys {
         return new Promise((resolve) => {
             const check = () => {
                 // Check if video exists and UI exists
-                this.videoController.checkAndEmitPlayerState();
-                if (this.state.isPlayerReady && document.querySelector(selectors.player.ui)) {
+                this.playerController.checkAndEmitPlayerState();
+                if (
+                    this.state.isPlayerReady &&
+                    document.querySelector(selectors.player.ui)
+                ) {
                     resolve(true);
                 } else if (retries >= this.config.maxRetries) {
                     resolve(false);
@@ -69,8 +79,8 @@ class VKVideoHotkeys {
                 lastPlayer = player;
                 this.setup();
             }
-            if (player && !this.uiController.rewindContainer) {
-                this.uiController.injectControls();
+            if (player && !this.interfaceController.rewindContainer) {
+                this.interfaceController.injectControls();
             }
         });
 
@@ -83,13 +93,25 @@ class VKVideoHotkeys {
     async setup() {
         const ready = await this.waitForPlayer();
         if (ready) {
-            this.uiController.injectControls();
+            this.interfaceController.injectControls();
         }
     }
 
     init() {
-        document.addEventListener("keydown", (e) => { if (this.canInteract()) this.hotkeysController.handleKeydown(e) }, true);
-        document.addEventListener("keyup", (e) => { if (this.canInteract()) this.hotkeysController.handleKeyup(e) }, true);
+        document.addEventListener(
+            "keydown",
+            (e) => {
+                if (this.canInteract()) this.hotkeysController.handleKeydown(e);
+            },
+            true
+        );
+        document.addEventListener(
+            "keyup",
+            (e) => {
+                if (this.canInteract()) this.hotkeysController.handleKeyup(e);
+            },
+            true
+        );
 
         this.setup();
         this.initObserver();

@@ -1,5 +1,5 @@
-import React from 'react';
-import {t} from '../../shared/utils/i18n';
+import React from "react";
+import {t} from "../../shared/utils/i18n";
 
 const Table = ({data}) => {
     return (

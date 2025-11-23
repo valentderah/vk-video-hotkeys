@@ -1,4 +1,4 @@
-export class VideoController {
+export class PlayerController {
     constructor(eventBus, selectors, config) {
         this.eventBus = eventBus;
         this.config = config;

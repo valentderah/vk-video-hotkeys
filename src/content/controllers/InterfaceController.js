@@ -1,7 +1,7 @@
 import {getSpeedLabel} from "../templates/speedLabel";
 import {getControls} from "../templates/controls";
 
-export class UIController {
+export class InterfaceController {
     constructor(eventBus, selectors, config) {
         this.eventBus = eventBus;
         this.selectors = selectors;
@@ -13,14 +13,14 @@ export class UIController {
 
         this.listenToEvents();
     }
-    
+
+    listenToEvents() {
+        this.eventBus.on("video:speedChanged", () => this.showSpeedLabelTemp());
+    }
+
     get video() {
         // This is one of the few places direct DOM access is still simplest.
         return document.querySelector(this.selectors.player.video);
-    }
-
-    listenToEvents() {
-        this.eventBus.on('video:speedChanged', () => this.showSpeedLabelTemp());
     }
 
     get speedLabel() {
@@ -38,7 +38,7 @@ export class UIController {
             if (!video) return null;
 
             if (video.parentNode) {
-                video.parentNode.style.position = 'relative';
+                video.parentNode.style.position = "relative";
             }
 
             const html = getSpeedLabel(
@@ -46,7 +46,14 @@ export class UIController {
                 this.selectors.ext.speedLabel.slice(1)
             );
 
-            video.parentNode.insertAdjacentHTML('afterbegin', html);
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            label = doc.body.firstElementChild;
+
+            // Use insertAdjacentHTML or appendChild correctly
+            // The template creates a full node, but inserting as HTML string is often cleaner for templates
+            // However, getSpeedLabel returns a string.
+            video.parentNode.insertAdjacentHTML("afterbegin", html);
             label = this.speedLabel;
         }
         return label;
@@ -88,7 +95,7 @@ export class UIController {
             this.selectors.ext.forwardLabel.slice(1)
         );
 
-        timeSelector.insertAdjacentHTML('beforebegin', html);
+        timeSelector.insertAdjacentHTML("beforebegin", html);
         this.initControlEvents();
     }
 
@@ -99,14 +106,14 @@ export class UIController {
         if (backBtn) {
             backBtn.onclick = (e) => {
                 e.stopPropagation();
-                this.eventBus.emit('request:seek', {gap: -this.config.rewindGap});
+                this.eventBus.emit("request:seek", {gap: -this.config.rewindGap});
             };
         }
 
         if (forwardBtn) {
             forwardBtn.onclick = (e) => {
                 e.stopPropagation();
-                this.eventBus.emit('request:seek', {gap: this.config.rewindGap});
+                this.eventBus.emit("request:seek", {gap: this.config.rewindGap});
             };
         }
     }
