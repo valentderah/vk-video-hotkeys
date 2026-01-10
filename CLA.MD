@@ -4,7 +4,7 @@ By contributing to this project, you agree to the following terms and conditions
 
 ### 1. Definitions
 "You" means the individual or legal entity that is making a contribution to this project.
-"Owner" means [YOUR NAME OR COMPANY], the owner of this project.
+"Owner" means Valiantsin Dzerakh (valentderah), the owner of this project.
 "Contribution" means any source code, documentation, or other material submitted by You to the Owner for inclusion in the project.
 
 ### 2. Grant of Rights
