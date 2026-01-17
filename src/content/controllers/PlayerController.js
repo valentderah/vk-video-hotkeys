@@ -40,7 +40,7 @@ export class PlayerController {
 
     toggleCinemaMode() {
         if (!this.video) return;
-        // Для режима кинотеатра ищем контейнер вне Shadow DOM
+
         const shadowContainer = document.querySelector(this.selectors.shadowContainer);
         if (!shadowContainer) return;
         
@@ -85,15 +85,13 @@ export class PlayerController {
     toggleCaptions() {
         const video = this.video;
         if (!video) return;
-        
-        // Пробуем найти кнопку субтитров в Shadow DOM
+
         const captionsBtn = queryShadowSelector(this.selectors.player.captions);
         if (captionsBtn) {
             captionsBtn.click();
             return;
         }
-        
-        // Fallback: работаем с textTracks напрямую
+
         if (video.textTracks.length > 0) {
             const track = video.textTracks[0];
             track.mode = track.mode === "showing" ? "hidden" : "showing";
@@ -106,7 +104,6 @@ export class PlayerController {
 
         let newSpeed = video.playbackRate + gap;
 
-        // Clamp speed
         newSpeed = Math.max(
             this.config.minSpeed,
             Math.min(newSpeed, this.config.maxSpeed)

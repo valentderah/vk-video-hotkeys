@@ -19,7 +19,6 @@ class VKVideoHotkeys {
 
         const eventBus = new EventEmitter();
 
-        // Initialize modules
         this.playerController = new PlayerController(
             eventBus,
             selectors,
@@ -119,7 +118,9 @@ class VKVideoHotkeys {
         this.setup();
         this.initObserver();
 
-        console.log("VK Video Hotkeys: Initialized");
+        console.log("%c VK Video Hotkeys %c initialized successfully.",
+            "background: #FFCC00; color: #333; border-radius: 3px; font-weight: bold;",
+            "color: inherit;",);
     }
 }
 
