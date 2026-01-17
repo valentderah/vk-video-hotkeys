@@ -1,12 +1,13 @@
 import {t} from "./i18n";
 
 export const selectors = {
+    shadowContainer: ".shadow-root-container",
     player: {
-        ui: ".videoplayer_ui",
-        video: ".videoplayer_media_provider",
-        captions: ".videoplayer_btn_subtitles",
-        controls: ".videoplayer_controls",
-        time: ".videoplayer_time",
+        ui: ".vk-vp-root, .player-wrapper",
+        video: ".player-media",
+        captions: "[data-testid='subtitles-btn']",
+        controls: "[data-testid='player_controls']",
+        time: ".time, [data-testid='current_time']",
     },
     columns: ".vkuiSplitCol__host",
     inputs: {

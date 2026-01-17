@@ -1,3 +1,5 @@
+import {queryShadowSelector} from "../../shared/utils/shadowDom";
+
 export class PlayerController {
     constructor(eventBus, selectors, config) {
         this.eventBus = eventBus;
@@ -33,12 +35,16 @@ export class PlayerController {
     }
 
     get video() {
-        return document.querySelector(this.selectors.player.video);
+        return queryShadowSelector(this.selectors.player.video);
     }
 
     toggleCinemaMode() {
         if (!this.video) return;
-        const videoWrapper = this.video.closest(this.selectors.columns);
+        // Для режима кинотеатра ищем контейнер вне Shadow DOM
+        const shadowContainer = document.querySelector(this.selectors.shadowContainer);
+        if (!shadowContainer) return;
+        
+        const videoWrapper = shadowContainer.closest(this.selectors.columns);
         if (!videoWrapper) return;
 
         const recommendations = videoWrapper.nextElementSibling;
@@ -78,7 +84,17 @@ export class PlayerController {
 
     toggleCaptions() {
         const video = this.video;
-        if (video && video.textTracks.length > 0) {
+        if (!video) return;
+        
+        // Пробуем найти кнопку субтитров в Shadow DOM
+        const captionsBtn = queryShadowSelector(this.selectors.player.captions);
+        if (captionsBtn) {
+            captionsBtn.click();
+            return;
+        }
+        
+        // Fallback: работаем с textTracks напрямую
+        if (video.textTracks.length > 0) {
             const track = video.textTracks[0];
             track.mode = track.mode === "showing" ? "hidden" : "showing";
         }

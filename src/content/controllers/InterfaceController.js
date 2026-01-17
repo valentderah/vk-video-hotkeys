@@ -1,5 +1,6 @@
 import {getSpeedLabel} from "../templates/speedLabel";
 import {getControls} from "../templates/controls";
+import {queryShadowSelector} from "../../shared/utils/shadowDom";
 
 export class InterfaceController {
     constructor(eventBus, selectors, config) {
@@ -19,16 +20,17 @@ export class InterfaceController {
     }
 
     get video() {
-        // This is one of the few places direct DOM access is still simplest.
-        return document.querySelector(this.selectors.player.video);
+        return queryShadowSelector(this.selectors.player.video);
     }
 
     get speedLabel() {
-        return document.querySelector(this.selectors.ext.speedLabel);
+        // Метка скорости должна быть в Shadow DOM рядом с видео
+        return queryShadowSelector(this.selectors.ext.speedLabel);
     }
 
     get rewindContainer() {
-        return document.querySelector(this.selectors.ext.rewindContainer);
+        // Контейнер перемотки должен быть в Shadow DOM
+        return queryShadowSelector(this.selectors.ext.rewindContainer);
     }
 
     ensureSpeedLabel() {
@@ -37,23 +39,18 @@ export class InterfaceController {
             const video = this.video;
             if (!video) return null;
 
-            if (video.parentNode) {
-                video.parentNode.style.position = "relative";
-            }
+            const videoContainer = video.parentNode;
+            if (!videoContainer) return null;
+            
+            videoContainer.style.position = "relative";
 
             const html = getSpeedLabel(
                 video.playbackRate,
                 this.selectors.ext.speedLabel.slice(1)
             );
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html");
-            label = doc.body.firstElementChild;
-
-            // Use insertAdjacentHTML or appendChild correctly
-            // The template creates a full node, but inserting as HTML string is often cleaner for templates
-            // However, getSpeedLabel returns a string.
-            video.parentNode.insertAdjacentHTML("afterbegin", html);
+            // Вставляем в Shadow DOM
+            videoContainer.insertAdjacentHTML("afterbegin", html);
             label = this.speedLabel;
         }
         return label;
@@ -87,7 +84,8 @@ export class InterfaceController {
     injectControls() {
         if (this.rewindContainer) return;
 
-        const timeSelector = document.querySelector(this.selectors.player.time);
+        // Ищем элемент времени в Shadow DOM
+        const timeSelector = queryShadowSelector(this.selectors.player.time);
         if (!timeSelector) return;
 
         const html = getControls(
@@ -100,8 +98,8 @@ export class InterfaceController {
     }
 
     initControlEvents() {
-        const backBtn = document.querySelector(this.selectors.ext.backLabel);
-        const forwardBtn = document.querySelector(this.selectors.ext.forwardLabel);
+        const backBtn = queryShadowSelector(this.selectors.ext.backLabel);
+        const forwardBtn = queryShadowSelector(this.selectors.ext.forwardLabel);
 
         if (backBtn) {
             backBtn.onclick = (e) => {

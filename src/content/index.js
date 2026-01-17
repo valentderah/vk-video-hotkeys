@@ -4,6 +4,7 @@ import {PlayerController} from "./controllers/PlayerController";
 import {InterfaceController} from "./controllers/InterfaceController";
 import {HotkeysController} from "./controllers/HotkeysController";
 import {EventEmitter} from "../shared/utils/EventEmitter";
+import {getShadowRoot} from "../shared/utils/shadowDom";
 
 class VKVideoHotkeys {
     constructor() {
@@ -52,11 +53,13 @@ class VKVideoHotkeys {
         let retries = 0;
         return new Promise((resolve) => {
             const check = () => {
-                // Check if video exists and UI exists
+                // Check if video exists and UI exists in Shadow DOM
                 this.playerController.checkAndEmitPlayerState();
+                const shadowRoot = getShadowRoot();
                 if (
                     this.state.isPlayerReady &&
-                    document.querySelector(selectors.player.ui)
+                    shadowRoot &&
+                    shadowRoot.querySelector(selectors.player.ui)
                 ) {
                     resolve(true);
                 } else if (retries >= this.config.maxRetries) {
@@ -71,15 +74,15 @@ class VKVideoHotkeys {
     }
 
     initObserver() {
-        let lastPlayer = document.querySelector(selectors.player.ui);
+        let lastShadowRoot = getShadowRoot();
 
         const observer = new MutationObserver(() => {
-            const player = document.querySelector(selectors.player.ui);
-            if (player && player !== lastPlayer) {
-                lastPlayer = player;
+            const shadowRoot = getShadowRoot();
+            if (shadowRoot && shadowRoot !== lastShadowRoot) {
+                lastShadowRoot = shadowRoot;
                 this.setup();
             }
-            if (player && !this.interfaceController.rewindContainer) {
+            if (shadowRoot && !this.interfaceController.rewindContainer) {
                 this.interfaceController.injectControls();
             }
         });
