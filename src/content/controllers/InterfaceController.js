@@ -1,22 +1,43 @@
 import {getSpeedLabel} from "../templates/speedLabel";
 import {getControls} from "../templates/controls";
 import {queryShadowSelector} from "../../shared/utils/shadowDom";
+import {getRewindGap} from "../../shared/utils/storage";
+import {STORAGE_KEYS} from "../../shared/utils/constants";
+import {playerConfig} from "../../shared/config";
 
 export class InterfaceController {
     constructor(eventBus, selectors, config) {
         this.eventBus = eventBus;
         this.selectors = selectors;
         this.config = config;
+        this.state = {
+            rewindGap: config.rewindGap,
+        };
         this.timeouts = {
             showSpeed: null,
         };
         this.intervalTime = 1000;
 
+        this.loadRewindGap();
         this.listenToEvents();
+        this.listenToStorageChanges();
     }
 
     listenToEvents() {
         this.eventBus.on("video:speedChanged", () => this.showSpeedLabelTemp());
+    }
+
+    listenToStorageChanges() {
+        chrome.storage.onChanged.addListener((changes, area) => {
+            if (area === "sync" && changes[STORAGE_KEYS.REWIND_GAP]) {
+                this.state.rewindGap = changes[STORAGE_KEYS.REWIND_GAP].newValue ?? this.config.rewindGap;
+            }
+        });
+    }
+
+    async loadRewindGap() {
+        const gap = await getRewindGap();
+        this.state.rewindGap = gap;
     }
 
     get video() {
@@ -104,14 +125,14 @@ export class InterfaceController {
         if (backBtn) {
             backBtn.onclick = (e) => {
                 e.stopPropagation();
-                this.eventBus.emit("request:seek", {gap: -this.config.rewindGap});
+                this.eventBus.emit("request:seek", {gap: -this.state.rewindGap});
             };
         }
 
         if (forwardBtn) {
             forwardBtn.onclick = (e) => {
                 e.stopPropagation();
-                this.eventBus.emit("request:seek", {gap: this.config.rewindGap});
+                this.eventBus.emit("request:seek", {gap: this.state.rewindGap});
             };
         }
     }

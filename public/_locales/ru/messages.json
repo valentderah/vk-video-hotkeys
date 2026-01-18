@@ -88,5 +88,11 @@
   },
   "press_key": {
     "message": "Нажмите любую клавишу..."
+  },
+  "rewind_gap_label": {
+    "message": "Размер перемотки"
+  },
+  "seconds": {
+    "message": "сек"
   }
 }

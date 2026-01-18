@@ -82,5 +82,11 @@
   },
   "press_key": {
     "message": "Press any key..."
+  },
+  "rewind_gap_label": {
+    "message": "Rewind gap"
+  },
+  "seconds": {
+    "message": "s"
   }
 }

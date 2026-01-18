@@ -42,4 +42,5 @@ export const EXT_VERSION = chrome.runtime.getManifest().version;
 
 export const STORAGE_KEYS = {
     HOTKEYS: "hotkeys",
+    REWIND_GAP: "rewindGap",
 };

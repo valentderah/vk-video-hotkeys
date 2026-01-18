@@ -1,5 +1,5 @@
 import {defaultHotkeys, playerConfig} from "../../shared/config";
-import {getHotkeys} from "../../shared/utils/storage";
+import {getHotkeys, getRewindGap} from "../../shared/utils/storage";
 import {STORAGE_KEYS} from "../../shared/utils/constants";
 
 export class HotkeysController {
@@ -12,6 +12,7 @@ export class HotkeysController {
         this.state = {
             isHoldingSpace: false,
             originalSpeed: 1.0,
+            rewindGap: playerConfig.rewindGap,
         };
 
         this.config = {
@@ -23,10 +24,14 @@ export class HotkeysController {
         this.updateKeyConfig(this.keyConfig);
 
         this.loadHotkeys();
+        this.loadRewindGap();
 
         chrome.storage.onChanged.addListener((changes, area) => {
             if (area === "sync" && changes[STORAGE_KEYS.HOTKEYS]) {
                 this.updateKeyConfig(changes[STORAGE_KEYS.HOTKEYS].newValue);
+            }
+            if (area === "sync" && changes[STORAGE_KEYS.REWIND_GAP]) {
+                this.state.rewindGap = changes[STORAGE_KEYS.REWIND_GAP].newValue ?? playerConfig.rewindGap;
             }
         });
 
@@ -42,10 +47,10 @@ export class HotkeysController {
             toggleCaptions: () => this.eventBus.emit("request:toggleCaptions"),
             toggleCinema: () => this.eventBus.emit("request:toggleCinema"),
             forward: () =>
-                this.eventBus.emit("request:seek", {gap: playerConfig.rewindGap}),
+                this.eventBus.emit("request:seek", {gap: this.state.rewindGap}),
             playPause: () => this.eventBus.emit("request:togglePlay"),
             back: () =>
-                this.eventBus.emit("request:seek", {gap: -playerConfig.rewindGap}),
+                this.eventBus.emit("request:seek", {gap: -this.state.rewindGap}),
             seek0: () =>
                 this.eventBus.emit("request:seekToPercent", {percent: 0}),
             seek10: () =>
@@ -73,6 +78,11 @@ export class HotkeysController {
     async loadHotkeys() {
         const hotkeys = await getHotkeys();
         this.updateKeyConfig(hotkeys);
+    }
+
+    async loadRewindGap() {
+        const gap = await getRewindGap();
+        this.state.rewindGap = gap;
     }
 
     updateKeyConfig(hotkeys) {

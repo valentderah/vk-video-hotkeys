@@ -3,15 +3,15 @@ $edit-color: #0077FF;
 $gray-text: #888888;
 $light-gray: #dddddd;
 $bg-gray: #f3f3f3;
-$border-radius: 0.625rem; // 10px
+$border-radius: 0.625rem;
 $font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
 body {
-    width: 25rem; // 400px
-    height: auto; // Adaptive
+    width: 25rem;
+    height: auto;
     margin: 0;
-    padding: 0.625rem; // 10px
-    padding-bottom: 0.9375rem; // 15px extra spacing
+    padding: 0.625rem;
+    padding-bottom: 0.9375rem;
     overflow-y: auto;
     font-family: $font-family;
 }
@@ -27,7 +27,7 @@ body {
 
 div.table-title {
     text-align: center;
-    margin: 0 auto 0.125rem auto; // 2px
+    margin: 0 auto 0.125rem auto;
     font-size: 1.2rem;
     font-weight: bold;
 }
@@ -55,10 +55,10 @@ div.table-title {
 
 .styled-table {
     border-collapse: collapse;
-    margin: 0.625rem 0; // 10px
+    margin: 0.625rem 0;
     font-size: 0.9em;
     width: 100%;
-    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.15); // 20px
+    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.15);
     border-radius: $border-radius;
     table-layout: fixed;
 
@@ -78,8 +78,8 @@ div.table-title {
 
     th,
     td {
-        padding: 0.3125rem 0.5rem; // 5px 8px
-        height: 3rem; // 48px
+        padding: 0.3125rem 0.5rem;
+        height: 2.9rem;
         vertical-align: middle;
         box-sizing: border-box;
         overflow: hidden;
@@ -122,8 +122,8 @@ div.table-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.625rem; // 10px
-    padding: 0 0.3125rem; // 5px horizontal padding to align nicely
+    margin-top: 0.625rem;
+    padding: 0 0.3125rem;
 
     .reset-btn {
         cursor: pointer;
@@ -136,21 +136,20 @@ div.table-title {
         }
     }
 
-    // Override .icon-row styles when inside footer
     .icon-row {
         margin-top: 0;
         padding-bottom: 0;
-        gap: 0.625rem; // 10px - slightly tighter gap
+        gap: 0.625rem;
     }
 }
 
 .icon-row {
     display: flex;
-    gap: 0.9375rem; // 15px
+    gap: 0.9375rem;
     align-items: center;
     justify-content: center;
-    margin-top: 0.9375rem; // 15px
-    padding-bottom: 0.625rem; // 10px
+    margin-top: 0.9375rem;
+    padding-bottom: 0.625rem;
 }
 
 .icon {
@@ -178,7 +177,7 @@ div.table-title {
     white-space: normal;
     word-wrap: break-word;
     transition: color 0.2s;
-    font-weight: 600; // Semi-bold
+    font-weight: 600;
 
     &:hover {
         color: $primary-color;
@@ -199,5 +198,56 @@ div.table-title {
     }
     100% {
         opacity: 1;
+    }
+}
+
+.rewind-gap-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3125rem 0.5rem;
+    margin: 0;
+    background-color: #fafafa;
+    font-size: 0.8rem;
+    height: 2.9rem;
+    box-sizing: border-box;
+    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.15);
+    border-radius: $border-radius;
+
+    .rewind-gap-label {
+        color: #000000;
+        font-weight: normal;
+        text-align: left;
+        width: 65%;
+    }
+
+    .rewind-gap-value {
+        cursor: pointer;
+        color: #000000;
+        font-weight: 600;
+        text-align: left;
+        width: 35%;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+
+    .rewind-gap-input {
+        width: 35%;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $edit-color;
+        text-align: left;
+        outline: none;
+        background: transparent;
+
+        &:focus {
+            color: $edit-color;
+        }
     }
 }

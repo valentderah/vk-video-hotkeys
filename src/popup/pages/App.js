@@ -2,6 +2,7 @@ import React from "react";
 import Table from "../components/Table";
 import Logo from "../components/Logo";
 import SocialLinks from "../components/SocialLinks";
+import RewindGapSettings from "../components/RewindGapSettings";
 import {t} from "../../shared/utils/i18n";
 import {EXT_VERSION, actionDescriptions} from "../../shared/utils/constants";
 import {useHotkeys} from "../hooks/useHotkeys";
@@ -25,6 +26,7 @@ const App = () => {
             </div>
             <div className="min-v300">
                 <Table data={tableData} onUpdate={updateHotkey}/>
+                <RewindGapSettings/>
                 <div className="footer-controls">
                     <div
                         className="reset-btn"
