@@ -6,12 +6,15 @@
 <p>This extension brings back the familiar YouTube player controls on JKL keys.</p>
 </div>
 
+<img src="public/images/banners/banner-en.png">
+
 ## Features
 - **Familiar Hotkeys**: Use J, K, L for navigation like on YouTube.
 - **Speed Control**: Increase/decrease playback speed with `<` and `>`.
 - **UI Integration**: Adds visual rewind/forward buttons directly to the player interface.
 - **Hold for Speed**: Hold Spacebar to temporarily speed up video to 2x.
 - **Seek by %**: Use number keys 0-9 to jump to specific parts of the video.
+- **Changing the rewind gap**: You can set it to any length you want.
 - **Customizable**: Rebind keys to your preference via the extension popup.
 
 ## Default Controls
@@ -49,3 +52,10 @@
 
 </details>
 </div>
+
+Figma
+---
+<details>
+<summary>Link</summary>
+https://www.figma.com/community/file/1595888380130375192
+</details>
