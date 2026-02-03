@@ -14,11 +14,11 @@
   "action": {
     "message": "Действие"
   },
-  "backward_15": {
-    "message": "Назад на 15 секунд"
+  "rewind": {
+    "message": "Мотать назад"
   },
-  "forward_15": {
-    "message": "Вперед на 15 секунд"
+  "forward": {
+    "message": "Мотать вперед"
   },
   "play_pause": {
     "message": "Пауза / Проигрывание"
@@ -94,5 +94,8 @@
   },
   "seconds": {
     "message": "сек"
+  },
+  "flip_horizontal": {
+    "message": "Отразить видео по горизонтали"
   }
 }

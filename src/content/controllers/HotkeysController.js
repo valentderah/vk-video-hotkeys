@@ -72,6 +72,7 @@ export class HotkeysController {
             seek90: () =>
                 this.eventBus.emit("request:seekToPercent", {percent: 90}),
             speedHold: (e) => this.handleSpaceDown(e),
+            flipHorizontal: () => this.eventBus.emit("request:flipHorizontal"),
         };
     }
 

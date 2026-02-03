@@ -16,7 +16,8 @@ export const defaultHotkeys = {
   seek70: "Digit7",
   seek80: "Digit8",
   seek90: "Digit9",
-  speedHold: "Space"
+  speedHold: "Space",
+  flipHorizontal: "KeyB",
 };
 
 export const playerConfig = {

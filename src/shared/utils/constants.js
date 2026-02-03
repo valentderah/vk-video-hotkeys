@@ -23,14 +23,15 @@ export const selectors = {
 };
 
 export const actionDescriptions = {
-    back: "backward_15",
+    back: "rewind",
     playPause: "play_pause",
-    forward: "forward_15",
+    forward: "forward",
     toggleCaptions: "turn_on_off_subs",
     toggleCinema: "turn_on_off_cinema",
     decreaseSpeed: "decrease_speed",
     increaseSpeed: "increase_speed",
     speedHold: "hold_space_desc",
+    flipHorizontal: "flip_horizontal",
 };
 
 export const socialLinks = {

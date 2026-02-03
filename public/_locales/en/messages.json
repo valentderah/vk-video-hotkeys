@@ -14,11 +14,11 @@
   "action": {
     "message": "Action"
   },
-  "backward_15": {
-    "message": "Backward 15 seconds"
+  "rewind": {
+    "message": "Rewind back"
   },
-  "forward_15": {
-    "message": "Forward 15 seconds"
+  "forward": {
+    "message": "Forward"
   },
   "play_pause": {
     "message": "Play / Pause"
@@ -88,5 +88,8 @@
   },
   "seconds": {
     "message": "s"
+  },
+  "flip_horizontal": {
+    "message": "Mirror video horizontally"
   }
 }
