@@ -22,7 +22,10 @@ const config = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: 'public'
+                    from: 'public',
+                    globOptions: {
+                        ignore: ['**/images/banners/**']
+                    }
                 }
             ]
         }),
