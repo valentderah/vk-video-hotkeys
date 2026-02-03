@@ -15,21 +15,23 @@
 - **Hold for Speed**: Hold Spacebar to temporarily speed up video to 2x.
 - **Seek by %**: Use number keys 0-9 to jump to specific parts of the video.
 - **Changing the rewind gap**: You can set it to any length you want.
+- **Horizontal flip**: Handy when the video was re-uploaded mirrored.
 - **Customizable**: Rebind keys to your preference via the extension popup.
 
 ## Default Controls
 
-| Key           | Action                   |
-|---------------|--------------------------|
-| J             | Rewind 15 seconds        |
-| K             | Pause / Play             |
-| L             | Fast forward 15 seconds  |
-| 1-9           | Seek video by percentage |
-| C             | Toggle subtitles         |
-| T             | Toggle theater mode      |
-| <             | Decrease playback speed  |
-| \>            | Increase playback speed  |
-| Hold Spacebar | Speed up video to (2x)   |
+| Key           | Action                            |
+|---------------|-----------------------------------|
+| J             | Rewind 15 seconds                 |
+| K             | Pause / Play                      |
+| L             | Fast forward 15 seconds           |
+| 1-9           | Seek video by percentage          |
+| C             | Toggle subtitles                  |
+| T             | Toggle theater mode               |
+| \<            | Decrease playback speed           |
+| \>            | Increase playback speed           |
+| Hold Spacebar | Speed up video to (2x)            |
+| B             | Mirror video horizontally         |
 
 <div>
 <h2>Extension Installation</h2>
