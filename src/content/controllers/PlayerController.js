@@ -26,6 +26,17 @@ export class PlayerController {
             this.playbackRate = this.originalSpeed;
             this.eventBus.emit('video:speedChanged');
         });
+        this.eventBus.on('request:flipHorizontal', () => this.flipHorizontal());
+    }
+
+    flipHorizontal() {
+        const video = this.video;
+        if (!video) return;
+
+        const matrix = new DOMMatrix(getComputedStyle(video).transform);
+        matrix.scaleSelf(-1, 1, 1); // Flips horizontally
+
+        video.style.setProperty('transform', matrix.toString(), 'important');
     }
 
     checkAndEmitPlayerState() {
