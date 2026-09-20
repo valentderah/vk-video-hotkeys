@@ -98,6 +98,7 @@ export class HotkeysController {
     }
 
     handleKeydown(e) {
+        if (e.ctrlKey || e.altKey || e.metaKey) return;
         const actionName = this.actionMap[e.code];
         if (actionName && this.actions[actionName]) {
             e.preventDefault();
@@ -108,11 +109,22 @@ export class HotkeysController {
 
     handleKeyup(e) {
         const actionName = this.actionMap[e.code];
-        if (actionName === 'speedHold') {
-            e.preventDefault();
-            e.stopPropagation();
-            this.handleSpaceUp();
+        if (actionName !== 'speedHold') return;
+
+        if (e.ctrlKey || e.altKey || e.metaKey) {
+            if (this.timeouts.spacePress) {
+                clearTimeout(this.timeouts.spacePress);
+                this.timeouts.spacePress = null;
+            } else if (this.state.isHoldingSpace) {
+                this.state.isHoldingSpace = false;
+                this.eventBus.emit('request:releaseHoldSpeed');
+            }
+            return;
         }
+
+        e.preventDefault();
+        e.stopPropagation();
+        this.handleSpaceUp();
     }
 
     handleSpaceDown(e) {
