@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure tag is on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor HEAD origin/main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Decode signing key
+        run: |
+          echo "${{ secrets.EXTENSION_PEM_BASE64 }}" | base64 -d > key.pem
+          chmod 600 key.pem
+
+      - name: Build and pack
+        run: make prod
+
+      - name: Remove signing key
+        if: always()
+        run: rm -f key.pem
+
+      - name: Resolve artifact paths
+        id: artifacts
+        run: |
+          VERSION=$(node -p "require('./dist/manifest.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "zip=release/vk-video-hotkeys-${VERSION}.zip" >> "$GITHUB_OUTPUT"
+          echo "crx=release/vk-video-hotkeys-${VERSION}.crx" >> "$GITHUB_OUTPUT"
+
+      - name: Verify CRX3 header
+        run: node scripts/verify-crx3-header.js "${{ steps.artifacts.outputs.crx }}"
+
+      - name: Publish to Chrome Web Store
+        env:
+          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+          PUBLISHER_ID: ${{ secrets.CHROME_PUBLISHER_ID }}
+        run: |
+          # CLI v4: bare invocation uploads+publishes; split for explicit publish step
+          npx chrome-webstore-upload upload \
+            --source "${{ steps.artifacts.outputs.zip }}" \
+            --extension-id "$EXTENSION_ID"
+          npx chrome-webstore-upload publish \
+            --extension-id "$EXTENSION_ID"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ steps.artifacts.outputs.zip }}
+            ${{ steps.artifacts.outputs.crx }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
