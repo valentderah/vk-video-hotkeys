@@ -19,3 +19,8 @@ Thumbs.db
 
 docs
 .superpowers
+
+key.pem
+release/
+*.crx
+key.pem.b64
